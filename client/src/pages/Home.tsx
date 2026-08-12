@@ -1,64 +1,58 @@
-/* Quiet Signal: editorial debugging commons. Ivory paper, ink typography, signal orange for moments of blockage. */
-import { useMemo, useState } from "react";
-import { ArrowUpRight, ChevronRight, CircleDot, Filter, Lightbulb, MessageCircle, Plus, Search, ShieldCheck, Sparkles, X } from "lucide-react";
+/* Quiet Signal: anonymous learners share context, failed paths, and next perspectives—not just answers. */
+import { useEffect, useMemo, useState } from "react";
+import { ArrowUpRight, Bookmark, CheckCircle2, ChevronRight, CircleDot, Flag, Heart, Lightbulb, MessageCircle, Plus, Search, ShieldAlert, ShieldCheck, Sparkles, TimerReset, X } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-type Post = { id: number; title: string; excerpt: string; tags: string[]; stage: string; age: string; replies: number; signal: string; tone: "orange" | "teal" | "ink" };
+type HintType = "관찰 힌트" | "실패 경로" | "확인 질문";
+type Sort = "latest" | "needs" | "near";
+type Post = { id: number; title: string; excerpt: string; tags: string[]; stage: string; age: string; replies: number; tone: "orange" | "teal" | "ink"; course: string; week: string; attempts: string; empathy: number };
 
 const seedPosts: Post[] = [
-  { id: 1, title: "useEffect가 두 번 실행되는 이유를 아직 못 잡고 있어요", excerpt: "StrictMode를 끄면 사라지는데, 끄는 게 해결은 아닌 것 같아서요. 어디부터 관찰하면 좋을까요?", tags: ["React", "디버깅"], stage: "원인 찾는 중", age: "8분 전", replies: 6, signal: "높음", tone: "orange" },
-  { id: 2, title: "API 응답은 오는데 화면에만 안 나타납니다", excerpt: "네트워크 탭에서는 200인데 state가 업데이트되지 않아요. 비슷한 실패 경로가 있었나요?", tags: ["비동기", "상태"], stage: "단서 수집 중", age: "22분 전", replies: 3, signal: "중간", tone: "teal" },
-  { id: 3, title: "팀원이랑 폴더 구조 의견이 갈렸어요", excerpt: "정답이 있는 문제는 아닌데, 지금 결정하면 나중에 바꾸기 어려울까 봐 멈춰 있습니다.", tags: ["협업", "설계"], stage: "결정 대기", age: "41분 전", replies: 9, signal: "낮음", tone: "ink" },
-  { id: 4, title: "CSS는 맞는데 모바일에서만 레이아웃이 무너져요", excerpt: "데스크톱에서는 괜찮고 375px에서 카드가 밀립니다. 확인 순서에 대한 힌트를 구해요.", tags: ["CSS", "반응형"], stage: "범위 좁히는 중", age: "1시간 전", replies: 4, signal: "중간", tone: "teal" },
+  { id: 1, title: "useEffect가 두 번 실행되는 이유를 아직 못 잡고 있어요", excerpt: "StrictMode를 끄면 사라지는데, 끄는 게 해결은 아닌 것 같아서요. 어디부터 관찰하면 좋을까요?", tags: ["React", "디버깅"], stage: "원인 찾는 중", age: "8분 전", replies: 6, tone: "orange", course: "프론트엔드", week: "4주차", attempts: "의존성 배열을 확인했고, StrictMode를 껐다 켜보았습니다.", empathy: 12 },
+  { id: 2, title: "API 응답은 오는데 화면에만 안 나타납니다", excerpt: "네트워크 탭에서는 200인데 state가 업데이트되지 않아요. 비슷한 실패 경로가 있었나요?", tags: ["비동기", "상태"], stage: "단서 수집 중", age: "22분 전", replies: 3, tone: "teal", course: "프론트엔드", week: "5주차", attempts: "응답 객체와 setState 직전의 값을 콘솔에서 출력해 보았습니다.", empathy: 7 },
+  { id: 3, title: "팀원이랑 폴더 구조 의견이 갈렸어요", excerpt: "정답이 있는 문제는 아닌데, 지금 결정하면 나중에 바꾸기 어려울까 봐 멈춰 있습니다.", tags: ["협업", "설계"], stage: "결정 대기", age: "41분 전", replies: 9, tone: "ink", course: "프로젝트", week: "8주차", attempts: "기능 기준과 도메인 기준의 두 가지 구조를 각각 적어 비교했습니다.", empathy: 18 },
+  { id: 4, title: "CSS는 맞는데 모바일에서만 레이아웃이 무너져요", excerpt: "데스크톱에서는 괜찮고 375px에서 카드가 밀립니다. 확인 순서에 대한 힌트를 구해요.", tags: ["CSS", "반응형"], stage: "범위 좁히는 중", age: "1시간 전", replies: 4, tone: "teal", course: "프론트엔드", week: "3주차", attempts: "개발자 도구에서 overflow와 min-width 값을 하나씩 확인했습니다.", empathy: 5 },
 ];
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>(seedPosts);
-  const [activeTag, setActiveTag] = useState("전체");
-  const [query, setQuery] = useState("");
-  const [showComposer, setShowComposer] = useState(false);
-  const [selected, setSelected] = useState<Post | null>(null);
-  const [newTitle, setNewTitle] = useState("");
-  const [newBody, setNewBody] = useState("");
-  const [hint, setHint] = useState("");
-  const [notice, setNotice] = useState("");
+  const [activeTag, setActiveTag] = useState("전체"); const [query, setQuery] = useState(""); const [sort, setSort] = useState<Sort>("latest");
+  const [showComposer, setShowComposer] = useState(false); const [selected, setSelected] = useState<Post | null>(null);
+  const [savedIds, setSavedIds] = useState<number[]>([]); const [empathizedIds, setEmpathizedIds] = useState<number[]>([]);
+  const [newTitle, setNewTitle] = useState(""); const [newBody, setNewBody] = useState(""); const [newAttempts, setNewAttempts] = useState("");
+  const [newCourse, setNewCourse] = useState("프론트엔드"); const [newWeek, setNewWeek] = useState("이번 주"); const [newStage, setNewStage] = useState("원인 찾는 중");
+  const [hint, setHint] = useState(""); const [hintType, setHintType] = useState<HintType>("관찰 힌트"); const [notice, setNotice] = useState("");
 
-  const filtered = useMemo(() => posts.filter((post) => {
-    const matchesTag = activeTag === "전체" || post.tags.includes(activeTag);
-    const matchesQuery = !query || `${post.title} ${post.excerpt} ${post.tags.join(" ")}`.toLowerCase().includes(query.toLowerCase());
-    return matchesTag && matchesQuery;
-  }), [posts, activeTag, query]);
+  useEffect(() => { const saved = localStorage.getItem("quiet-signal-saved"); const empathized = localStorage.getItem("quiet-signal-empathy"); if (saved) setSavedIds(JSON.parse(saved)); if (empathized) setEmpathizedIds(JSON.parse(empathized)); }, []);
+  useEffect(() => { localStorage.setItem("quiet-signal-saved", JSON.stringify(savedIds)); }, [savedIds]);
+  useEffect(() => { localStorage.setItem("quiet-signal-empathy", JSON.stringify(empathizedIds)); }, [empathizedIds]);
+  const announce = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(""), 2800); };
+  const filtered = useMemo(() => posts.filter((post) => (activeTag === "전체" || post.tags.includes(activeTag)) && (!query || `${post.title} ${post.excerpt} ${post.tags.join(" ")} ${post.course}`.toLowerCase().includes(query.toLowerCase()))).sort((a, b) => sort === "needs" ? a.replies - b.replies : sort === "near" ? b.replies - a.replies : b.id - a.id), [posts, activeTag, query, sort]);
 
   function submitPost() {
-    if (!newTitle.trim()) return;
-    const post: Post = { id: Date.now(), title: newTitle, excerpt: newBody || "아직 문장을 다듬는 중이에요. 먼저 막힌 장면부터 남겨두었습니다.", tags: ["새 신호"], stage: "첫 관점 기다리는 중", age: "방금 전", replies: 0, signal: "새로움", tone: "orange" };
-    setPosts((current) => [post, ...current]); setNewTitle(""); setNewBody(""); setShowComposer(false); setNotice("익명 신호가 교환소에 도착했어요.");
-    window.setTimeout(() => setNotice(""), 2800);
+    if (!newTitle.trim()) return announce("막힌 장면을 한 문장으로 먼저 적어주세요.");
+    const post: Post = { id: Date.now(), title: newTitle, excerpt: newBody || "아직 문장을 다듬는 중이에요. 먼저 막힌 장면부터 남겨두었습니다.", tags: [newCourse, "새 신호"], stage: newStage, age: "방금 전", replies: 0, tone: "orange", course: newCourse, week: newWeek, attempts: newAttempts || "아직 적지 않았어요. 다음 시도에서 업데이트할 수 있습니다.", empathy: 0 };
+    setPosts((current) => [post, ...current]); setNewTitle(""); setNewBody(""); setNewAttempts(""); setShowComposer(false); announce("익명 신호가 교환소에 도착했어요.");
   }
+  function submitHint() { if (!hint.trim() || !selected) return announce("다음 시도를 돕는 관점을 적어주세요."); const updated = { ...selected, replies: selected.replies + 1 }; setPosts((current) => current.map((post) => post.id === selected.id ? updated : post)); setSelected(updated); setHint(""); announce(`${hintType}을 남겼어요. 정답보다 다음 시도가 중요합니다.`); }
+  function toggleSave(id: number) { const isSaved = savedIds.includes(id); setSavedIds((current) => isSaved ? current.filter((saved) => saved !== id) : [...current, id]); announce(isSaved ? "저장 목록에서 꺼냈어요." : "나중에 다시 볼 신호로 저장했어요."); }
+  function toggleEmpathy(id: number) { if (empathizedIds.includes(id)) return announce("이미 같은 곳에서 막혔다는 신호를 보냈어요."); setEmpathizedIds((current) => [...current, id]); setPosts((current) => current.map((post) => post.id === id ? { ...post, empathy: post.empathy + 1 } : post)); if (selected?.id === id) setSelected({ ...selected, empathy: selected.empathy + 1 }); announce("혼자가 아니라는 신호를 보냈어요."); }
 
-  function submitHint() {
-    if (!hint.trim() || !selected) return;
-    setPosts((current) => current.map((post) => post.id === selected.id ? { ...post, replies: post.replies + 1 } : post));
-    setHint(""); setNotice("정답이 아닌 다음 관점을 남겼어요."); window.setTimeout(() => setNotice(""), 2800);
-  }
-
+  const aloneCount = posts.filter((post) => post.replies < 4).length;
   return <div className="quiet-app">
-    <aside className="signal-rail">
-      <div className="brand-mark"><img src="/manus-storage/quiet-signal-mark_0f110d08.png" alt="막힘 교환소 심볼" /></div>
-      <div className="rail-label">SKALA<br />ANONYMOUS<br />DEBUGGING</div>
-      <div className="rail-line" />
-      <div className="rail-bottom"><span>2026 / 08</span><span className="vertical">QUIET SIGNAL</span></div>
-    </aside>
+    <aside className="signal-rail"><div className="brand-mark"><img src="/manus-storage/quiet-signal-mark_0f110d08.png" alt="막힘 교환소 심볼" /></div><div className="rail-label">SKALA<br />ANONYMOUS<br />DEBUGGING</div><div className="rail-line" /><div className="rail-bottom"><span>2026 / 08</span><span className="vertical">QUIET SIGNAL</span></div></aside>
     <main className="app-main">
-      <header className="topbar"><div className="wordmark">막힘 <span>/</span> 교환소</div><div className="top-actions"><span className="anonymous-pill"><ShieldCheck size={14} /> 로그인 없이, 익명으로</span><button className="text-button" onClick={() => setNotice("이 공간은 평가하지 않고 다음 시도를 돕습니다.")}>이용 원칙 <ChevronRight size={15} /></button></div></header>
-      <section className="hero"><div className="hero-copy"><p className="eyebrow"><CircleDot size={13} /> 지금 교환소에 들어온 신호 <strong>24</strong></p><h1>막힌 장면을 남기면,<br /><em>다음 관점</em>이 도착합니다.</h1><p className="hero-desc">정답을 묻는 게시판이 아니에요. 어디에서 방향을 잃었는지 남기면, 먼저 지나간 사람이 자신의 실패 경로와 힌트를 건넵니다.</p><button className="primary-button" onClick={() => setShowComposer(true)}><Plus size={18} /> 막힌 장면 남기기</button></div><div className="hero-art"><img src="/manus-storage/quiet-signal-studio_314aa134.png" alt="노트 위를 가로지르는 디버깅 신호" /><div className="art-caption">오늘의 신호 / 04 — 질문은 완성될 필요가 없습니다.</div></div></section>
-      <section className="workspace"><div className="feed-head"><div><p className="section-kicker">OPEN SIGNALS / 04</p><h2>지금, 누군가 여기서 멈췄어요.</h2></div><button className="filter-button"><Filter size={15} /> 최신순 <ChevronRight size={14} /></button></div>
+      <header className="topbar"><div className="wordmark">막힘 <span>/</span> 교환소</div><div className="top-actions"><span className="anonymous-pill"><ShieldCheck size={14} /> 로그인 없이, 익명으로</span><button className="text-button" onClick={() => announce("이름·연락처·정답 파일은 남기지 않고, 현재의 맥락과 다음 시도만 나눠요.")}>이용 원칙 <ChevronRight size={15} /></button></div></header>
+      <section className="hero"><div className="hero-copy"><p className="eyebrow"><CircleDot size={13} /> 지금 교환소에 들어온 신호 <strong>{posts.length + 20}</strong></p><h1>막힌 장면을 남기면,<br /><em>다음 관점</em>이 도착합니다.</h1><p className="hero-desc">정답을 묻는 게시판이 아니에요. 과정과 시도한 것을 함께 남기면, 먼저 지나간 사람이 자신의 실패 경로와 힌트를 건넵니다.</p><button className="primary-button" onClick={() => setShowComposer(true)}><Plus size={18} /> 막힌 장면 남기기</button></div><div className="hero-art"><img src="/manus-storage/quiet-signal-studio_314aa134.png" alt="노트 위를 가로지르는 디버깅 신호" /><div className="art-caption">오늘의 신호 / 04 — 질문은 완성될 필요가 없습니다.</div></div></section>
+      <section className="pulse-strip"><div><TimerReset size={17} /><span><strong>{aloneCount}개</strong> 아직 관점이 적은 신호</span></div><div><Sparkles size={17} /><span><strong>16개</strong> 오늘 오간 실패 경로</span></div><button onClick={() => announce(savedIds.length ? "저장한 신호는 이 브라우저에만 보관돼요." : "아직 저장한 신호가 없어요.")}><Bookmark size={17} /><span><strong>{savedIds.length}개</strong> 내가 저장한 신호</span></button></section>
+      <section className="workspace"><div className="feed-head"><div><p className="section-kicker">OPEN SIGNALS / {String(filtered.length).padStart(2, "0")}</p><h2>지금, 누군가 여기서 멈췄어요.</h2></div><div className="sort-switch"><button className={sort === "latest" ? "active" : ""} onClick={() => setSort("latest")}>새 신호</button><button className={sort === "needs" ? "active" : ""} onClick={() => setSort("needs")}>도움 필요</button><button className={sort === "near" ? "active" : ""} onClick={() => setSort("near")}>해결 근접</button></div></div>
         <div className="feed-tools"><div className="search-box"><Search size={16} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="문제, 기술, 상황으로 찾기" /></div><div className="tag-row">{["전체", "React", "비동기", "협업", "CSS"].map((tag) => <button key={tag} className={`tag-filter ${activeTag === tag ? "active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>)}</div></div>
-        <div className="signal-list">{filtered.map((post, index) => <article className="signal-card" key={post.id} onClick={() => setSelected(post)}><div className={`signal-index ${post.tone}`}>0{index + 1}</div><div className="signal-content"><div className="card-meta"><span>{post.stage}</span><span>{post.age}</span></div><h3>{post.title}</h3><p>{post.excerpt}</p><div className="card-foot"><div className="tag-list">{post.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><span className="reply-count"><MessageCircle size={14} /> {post.replies}개의 관점</span></div></div><ArrowUpRight className="card-arrow" size={21} /></article>)}</div>
-      </section>
-      <footer className="footer"><span>막힘은 개인의 결함이 아니라, 관점이 바뀌기 직전의 상태입니다.</span><span>SKALA / 익명 학습 실험</span></footer>
+        <div className="signal-list">{filtered.map((post, index) => <article className="signal-card" key={post.id} onClick={() => setSelected(post)}><div className={`signal-index ${post.tone}`}>0{index + 1}</div><div className="signal-content"><div className="card-meta"><span>{post.course} · {post.week}</span><span>{post.age}</span></div><h3>{post.title}</h3><p>{post.excerpt}</p><div className="context-line"><span><CircleDot size={12} /> {post.stage}</span><span><TimerReset size={12} /> 시도 기록</span></div><div className="card-foot"><div className="tag-list">{post.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="card-signals"><span className="reply-count"><MessageCircle size={14} /> {post.replies}개의 관점</span><span className="reply-count"><Heart size={14} /> {post.empathy}</span></div></div></div><ArrowUpRight className="card-arrow" size={21} /></article>)}</div>
+      </section><footer className="footer"><span>막힘은 개인의 결함이 아니라, 관점이 바뀌기 직전의 상태입니다.</span><span>SKALA / 익명 학습 실험</span></footer>
     </main>
-    {showComposer && <div className="modal-backdrop"><div className="composer modal-panel"><button className="close-button" onClick={() => setShowComposer(false)}><X size={18} /></button><p className="section-kicker">NEW SIGNAL / ANONYMOUS</p><h2>어디에서 멈췄나요?</h2><p className="modal-note">이름, 계정, 프로필 없이 지금의 장면만 남겨요.</p><input autoFocus value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="한 문장으로 막힌 장면을 적어주세요" /><textarea value={newBody} onChange={(e) => setNewBody(e.target.value)} placeholder="시도한 것, 확인한 것, 아직 모르는 것을 자유롭게 적어주세요." /><div className="composer-actions"><span><ShieldCheck size={14} /> 완전 익명</span><button className="primary-button" onClick={submitPost}>신호 보내기 <ArrowUpRight size={16} /></button></div></div></div>}
-    {selected && <div className="modal-backdrop"><div className="detail-panel modal-panel"><button className="close-button" onClick={() => setSelected(null)}><X size={18} /></button><div className="detail-signal"><CircleDot size={14} /> {selected.stage}</div><h2>{selected.title}</h2><p>{selected.excerpt}</p><div className="hint-divider"><span>관점 {selected.replies}</span><span>이름 없이 이어지는 기록</span></div><div className="hint-list"><div className="hint-card"><Lightbulb size={18} /><div><strong>힌트의 방향</strong><p>문제를 바로 고치기보다, 같은 요청이 몇 번 들어오는지 먼저 기록해보면 어떨까요?</p></div></div><div className="hint-card subtle"><Sparkles size={18} /><div><strong>나도 여기서 막혔어요</strong><p>정답은 아니지만, 콘솔 로그의 위치를 바꾸고 나서 범위가 좁혀졌습니다.</p></div></div></div><div className="hint-composer"><textarea value={hint} onChange={(e) => setHint(e.target.value)} placeholder="정답 말고, 다음 관점을 남겨주세요." /><button className="primary-button" onClick={submitHint}>관점 남기기</button></div></div></div>}
-    {notice && <div className="toast"><ShieldCheck size={16} /> {notice}</div>}
+    {showComposer && <div className="modal-backdrop"><div className="composer modal-panel"><button className="close-button" onClick={() => setShowComposer(false)}><X size={18} /></button><p className="section-kicker">NEW SIGNAL / ANONYMOUS</p><h2>어디에서 멈췄나요?</h2><p className="modal-note">이름, 계정, 프로필 없이 지금의 장면만 남겨요. 문제의 맥락이 많을수록 다음 관점이 빨리 도착합니다.</p><div className="composer-grid"><Select value={newCourse} onValueChange={setNewCourse}><SelectTrigger><SelectValue placeholder="과정" /></SelectTrigger><SelectContent><SelectItem value="프론트엔드">프론트엔드</SelectItem><SelectItem value="백엔드">백엔드</SelectItem><SelectItem value="프로젝트">프로젝트</SelectItem></SelectContent></Select><Select value={newWeek} onValueChange={setNewWeek}><SelectTrigger><SelectValue placeholder="주차" /></SelectTrigger><SelectContent><SelectItem value="이번 주">이번 주</SelectItem><SelectItem value="3주차">3주차</SelectItem><SelectItem value="4주차">4주차</SelectItem><SelectItem value="5주차">5주차</SelectItem><SelectItem value="8주차">8주차</SelectItem></SelectContent></Select></div><input autoFocus value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="한 문장으로 막힌 장면을 적어주세요" /><div className="stage-chips">{["원인 찾는 중", "단서 수집 중", "결정 대기", "범위 좁히는 중"].map((stage) => <button key={stage} className={newStage === stage ? "active" : ""} onClick={() => setNewStage(stage)}>{stage}</button>)}</div><Textarea value={newAttempts} onChange={(e) => setNewAttempts(e.target.value)} placeholder="이미 시도한 것 · 확인한 것 · 기대와 달랐던 결과를 적어주세요." /><Textarea value={newBody} onChange={(e) => setNewBody(e.target.value)} placeholder="지금 가장 알고 싶은 다음 한 가지를 적어주세요." /><div className="safety-note"><ShieldAlert size={15} /> 이름·연락처·개인정보와 과제의 완성 답안은 남기지 않아요.</div><div className="composer-actions"><span><ShieldCheck size={14} /> 완전 익명</span><button className="primary-button" onClick={submitPost}>신호 보내기 <ArrowUpRight size={16} /></button></div></div></div>}
+    {selected && <div className="modal-backdrop"><div className="detail-panel modal-panel"><button className="close-button" onClick={() => setSelected(null)}><X size={18} /></button><div className="detail-topline"><div className="detail-signal"><CircleDot size={14} /> {selected.stage}</div><button className="icon-action" onClick={() => toggleSave(selected.id)}><Bookmark size={17} fill={savedIds.includes(selected.id) ? "currentColor" : "none"} /></button></div><h2>{selected.title}</h2><p>{selected.excerpt}</p><div className="context-sheet"><div><span>과정</span><strong>{selected.course} · {selected.week}</strong></div><div><span>이미 시도한 것</span><strong>{selected.attempts}</strong></div></div><div className="detail-actions"><button onClick={() => toggleEmpathy(selected.id)} className={empathizedIds.includes(selected.id) ? "active" : ""}><Heart size={15} fill={empathizedIds.includes(selected.id) ? "currentColor" : "none"} /> 나도 여기서 막힘 {selected.empathy}</button><button onClick={() => announce("신고가 기록되었습니다. 개인정보와 완성 답안 공유 여부를 검토합니다.")}><Flag size={15} /> 신고</button></div><div className="hint-divider"><span>관점 {selected.replies}</span><span>이름 없이 이어지는 기록</span></div><div className="hint-list"><div className="hint-card"><Lightbulb size={18} /><div><strong>관찰 힌트</strong><p>문제를 바로 고치기보다, 같은 요청이 몇 번 들어오는지 먼저 기록해보면 어떨까요?</p></div></div><div className="hint-card subtle"><Sparkles size={18} /><div><strong>실패 경로</strong><p>정답은 아니지만, 콘솔 로그의 위치를 바꾸고 나서 범위가 좁혀졌습니다.</p></div></div></div><div className="hint-composer"><Select value={hintType} onValueChange={(value) => setHintType(value as HintType)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="관찰 힌트">관찰 힌트</SelectItem><SelectItem value="실패 경로">실패 경로</SelectItem><SelectItem value="확인 질문">확인 질문</SelectItem></SelectContent></Select><Textarea value={hint} onChange={(e) => setHint(e.target.value)} placeholder="정답 말고, 다음 관점을 남겨주세요." /><button className="primary-button" onClick={submitHint}>관점 남기기</button></div></div></div>}
+    {notice && <div className="toast"><CheckCircle2 size={16} /> {notice}</div>}
   </div>;
 }
