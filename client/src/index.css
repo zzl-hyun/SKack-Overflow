@@ -2,6 +2,15 @@
 /* Tailwind base is enough for this app; component styles live below. */
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "SKack Amsterdam";
+  src: url("@kfonts/nanum-handwritting-amseuteleudam/amseuteleudam.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  size-adjust: 120%;
+}
+
 @theme inline {
   --color-background: var(--skack-bg);
   --color-foreground: var(--skack-ink);
@@ -29,7 +38,7 @@
   --line: var(--skack-line);
   --orange: var(--skack-red);
   --teal: var(--skack-green);
-  --skack-hand-font: "나눔손글씨 암스테르담", "NanumAmSeuTeReuDam", cursive;
+  --skack-hand-font: "SKack Amsterdam", "나눔손글씨 암스테르담", "NanumAmSeuTeReuDam", cursive;
   color-scheme: light;
   font-family: var(--skack-hand-font);
 }

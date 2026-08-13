@@ -29,6 +29,10 @@ import {
   UserRound,
   X,
 } from "lucide-react";
+import {
+  MarkdownContent,
+  MarkdownEditor,
+} from "@/components/MarkdownEditor";
 import { Textarea } from "@/components/ui/textarea";
 
 type Mode = "강의 끝" | "과제 중" | "팀 작업";
@@ -762,7 +766,7 @@ export default function Home() {
     window.setTimeout(() => setNotice(""), 2800);
   };
   async function pasteImages(
-    event: ClipboardEvent<HTMLTextAreaElement>,
+    event: ClipboardEvent<HTMLElement>,
     currentImages: ImageAttachment[],
     onImagesAdded: (images: ImageAttachment[]) => void
   ) {
@@ -1920,10 +1924,9 @@ export default function Home() {
               placeholder="예: 화면은 떴는데 버튼이 안 눌려요"
               autoFocus
             />
-            <Textarea
+            <MarkdownEditor
               value={body}
-              maxLength={LIMITS.body}
-              onChange={event => setBody(event.target.value)}
+              onChange={setBody}
               onPaste={event =>
                 void pasteImages(event, questionImages, images =>
                   setQuestionImages(current =>
@@ -2004,13 +2007,12 @@ export default function Home() {
                         })
                       }
                     />
-                    <Textarea
+                    <MarkdownEditor
                       value={questionEdit.body}
-                      maxLength={LIMITS.body}
-                      onChange={event =>
+                      onChange={body =>
                         setQuestionEdit({
                           ...questionEdit,
-                          body: event.target.value,
+                          body,
                         })
                       }
                       onPaste={event =>
@@ -2069,7 +2071,7 @@ export default function Home() {
             </div>
             {!questionEdit && (
               <article className="question-body">
-                <p>{detail.body}</p>
+                <MarkdownContent markdown={detail.body} />
                 <ImageAttachments images={detail.images} />
                 <small>
                   {detail.createdAt} · <Eye size={12} /> {detail.views}회 조회
@@ -2162,13 +2164,12 @@ export default function Home() {
                       <div className="answer-content">
                         {answerEdit?.answerId === answer.id ? (
                           <>
-                            <Textarea
+                            <MarkdownEditor
                               value={answerEdit.body}
-                              maxLength={LIMITS.answer}
-                              onChange={event =>
+                              onChange={body =>
                                 setAnswerEdit({
                                   ...answerEdit,
-                                  body: event.target.value,
+                                  body,
                                 })
                               }
                               onPaste={event =>
@@ -2215,7 +2216,7 @@ export default function Home() {
                           </>
                         ) : (
                           <>
-                            <p>{answer.body}</p>
+                            <MarkdownContent markdown={answer.body} />
                             <ImageAttachments images={answer.images} />
                           </>
                         )}
@@ -2305,10 +2306,9 @@ export default function Home() {
               <p className="answer-prompt">
                 아는 내용을 한 줄만 남겨도 다음 SKALA 교육생에게 도움이 돼요.
               </p>
-              <Textarea
+              <MarkdownEditor
                 value={answerText}
-                maxLength={LIMITS.answer}
-                onChange={event => setAnswerText(event.target.value)}
+                onChange={setAnswerText}
                 onPaste={event =>
                   void pasteImages(event, answerImages, images =>
                     setAnswerImages(current =>
