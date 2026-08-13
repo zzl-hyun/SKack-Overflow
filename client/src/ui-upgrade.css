@@ -144,7 +144,7 @@
 }
 
 .side-panel::after {
-  content: "관찰 중 · 막힘 단계는 힌트가 도착하면 갱신됩니다.";
+  content: "답변이 달리면 글 상태가 갱신됩니다.";
   position: absolute;
   left: 31px;
   right: 17px;

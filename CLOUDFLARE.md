@@ -4,8 +4,8 @@ SKACK Overflow는 Cloudflare Workers가 정적 React 자산과 `/api/*` 요청�
 
 | KV 키 | 저장 내용 |
 |---|---|
-| `state:questions` | 서비스 전체 질문·힌트·댓글·답글 상태 |
-| `user:{익명 UID}` | 브라우저별 차단 목록과 힌트 읽음 상태 |
+| `state:questions` | 서비스 전체 질문·답변·댓글·답글 상태 |
+| `user:{익명 UID}` | 브라우저별 차단 목록과 새 답변 읽음 상태 |
 
 ## 명령
 
