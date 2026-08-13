@@ -12,17 +12,6 @@
   border-bottom-color: rgba(24, 34, 31, 0.23);
 }
 
-.topbar::before {
-  content: "SIGNAL ARCHIVE / OPEN";
-  position: absolute;
-  right: clamp(184px, 19vw, 274px);
-  top: 9px;
-  color: rgba(46, 118, 116, 0.62);
-  font: 7px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
-  pointer-events: none;
-}
-
 .skack-logo {
   position: relative;
   padding-right: 23px;
@@ -70,16 +59,6 @@
   position: relative;
   padding-top: 22px;
   border-bottom-width: 2px;
-}
-
-.question-toolbar::before {
-  content: "LOG STREAM / FILTER + OBSERVE";
-  position: absolute;
-  left: 0;
-  top: 5px;
-  color: var(--archive-teal);
-  font: 7px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
 }
 
 .filter-tabs button,
@@ -224,7 +203,6 @@
 }
 
 @media (max-width: 900px) {
-  .topbar::before { display: none; }
   .side-panel {
     position: relative;
     top: auto;
@@ -237,8 +215,7 @@
 @media (max-width: 620px) {
   .skack-logo { padding-right: 0; }
   .skack-logo::after,
-  .hero-copy::after,
-  .question-toolbar::before { display: none; }
+  .hero-copy::after { display: none; }
   .question-toolbar { padding-top: 12px; }
   .side-panel { background: rgba(24, 34, 31, 0.025); }
   .side-panel::before { left: 16px; }
