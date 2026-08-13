@@ -44,7 +44,7 @@
 }
 
 .hero-copy::after {
-  content: "OBSERVATION RECORD · 계속되는 막힘 신호";
+  content: "답변을 기다리는 질문도, 답변이 달린 질문도 바로 확인해 보세요.";
   display: block;
   width: fit-content;
   margin-top: 20px;
@@ -134,7 +134,7 @@
 }
 
 .side-panel::before {
-  content: "ARCHIVE MARGIN / LIVE";
+  content: "내 기록";
   position: absolute;
   left: 31px;
   top: 18px;
@@ -191,7 +191,7 @@
 }
 
 .data-tools::before {
-  content: "ARCHIVE TOOLS / LOCAL";
+  content: "내 기록 관리";
 }
 
 .data-tools {

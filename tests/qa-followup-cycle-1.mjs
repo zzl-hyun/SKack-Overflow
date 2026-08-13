@@ -13,7 +13,7 @@ try {
   await page.locator(".top-actions button").last().click();
   await page.locator(".ask-modal input").first().fill("삭제 해시 QA 질문");
   await page.locator(".ask-modal textarea").fill("삭제 뒤 주소 상태를 검증합니다.");
-  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "질문 올리기" }).click();
   await page.locator(".question-row").filter({ hasText: "삭제 해시 QA 질문" }).click();
   await page.locator(".detail-modal").getByRole("button", { name: "삭제" }).click();
   await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();

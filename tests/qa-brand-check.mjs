@@ -33,8 +33,8 @@ try {
     nextPerspective: getComputedStyle(document.querySelector(".hero-copy h1 em")).color,
     primaryAction: getComputedStyle(document.querySelector(".top-actions > button:last-child")).backgroundColor,
   }));
-  await check(colorRoles.nextPerspective === "rgb(46, 118, 116)", "‘다음 관점’은 teal 연결 신호를 사용한다");
-  await check(colorRoles.primaryAction === "rgb(232, 102, 61)", "‘막힘 남기기’ 행동은 Signal Orange를 사용한다");
+  await check(colorRoles.nextPerspective === "rgb(46, 118, 116)", "‘같이 풀어봐요’는 teal 연결 신호를 사용한다");
+  await check(colorRoles.primaryAction === "rgb(232, 102, 61)", "‘질문 올리기’ 행동은 Signal Orange를 사용한다");
 } finally {
   await browser.close();
 }
