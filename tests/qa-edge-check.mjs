@@ -32,10 +32,14 @@ try {
   await page.locator(".answer-form textarea").fill("QA 답변");
   await page.getByRole("button", { name: "힌트 남기기" }).click();
   await page.getByRole("button", { name: "댓글 쓰기" }).click();
+  note("댓글 쓰기 뒤 입력창에 자동 포커스가 이동한다", await page.locator(".comment-box textarea").evaluate((element) => document.activeElement === element));
   await page.getByRole("button", { name: "댓글 등록" }).click();
   note("빈 댓글 입력을 차단한다", await page.getByText("댓글 내용을 적어주세요.").isVisible());
   await page.locator(".comment-box textarea").fill("QA 댓글");
   await page.getByRole("button", { name: "댓글 등록" }).click();
+  await page.locator(".skack-comment").first().getByRole("button", { name: "답글" }).click();
+  note("답글 클릭 뒤 입력창에 자동 포커스가 이동한다", await page.locator(".comment-box textarea").evaluate((element) => document.activeElement === element));
+  await page.keyboard.press("Escape");
   await page.locator(".skack-comment").getByRole("button", { name: "수정" }).click();
   await page.locator(".skack-comment textarea").fill("QA 수정 댓글");
   await page.locator(".skack-comment").getByRole("button", { name: "저장" }).click();
