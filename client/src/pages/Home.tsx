@@ -1699,16 +1699,27 @@ export default function Home() {
                 >
                   <div className="signal-stage">
                     <i />
-                    <small>
-                      {String(index + 1).padStart(2, "0")} /{" "}
+                    <small
+                      title={
+                        isSolved(question)
+                          ? "해결됨"
+                          : answeredCount(question)
+                            ? "답변 달림"
+                            : "답변 기다리는 중"
+                      }
+                    >
+                      {String(index + 1).padStart(2, "0")} ·{" "}
                       {isSolved(question)
-                        ? "해결됨"
+                        ? "해결"
                         : answeredCount(question)
-                          ? "답변 달림"
-                          : "답변 기다리는 중"}
+                          ? "답변"
+                          : "대기"}
                     </small>
-                    <strong>{answeredCount(question)}</strong>
-                    <span>개 답변</span>
+                    <span className="answer-total">
+                      <span>답변</span>
+                      <strong>{answeredCount(question)}</strong>
+                      <span>개</span>
+                    </span>
                     {isSolved(question) && (
                       <b title="질문자가 고른 답변">
                         <Check size={12} />
