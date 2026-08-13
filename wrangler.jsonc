@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "skack-overflow",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-08-13",
+  "kv_namespaces": [
+    {
+      "binding": "SKACK_KV",
+      "id": "60fb9be1de934cec86d018d4d7274883"
+    }
+  ],
+  "assets": {
+    "directory": "./dist/public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  }
+}

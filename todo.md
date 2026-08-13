@@ -100,6 +100,14 @@
 - [x] 브라우저 기본 확인창 제거 및 토스트·확인 UI 전환
 - [x] 삭제·초기화·가져오기 확인 흐름 회귀 검증
 
+## Cloudflare Workers·KV 및 GitHub
+
+- [x] Cloudflare Workers·KV 연결 상태와 배포 구성 점검
+- [x] Workers API와 KV 영속성 계층 구현
+- [x] 프런트엔드의 질문·힌트·댓글 데이터 흐름 전환
+- [ ] 로컬·원격 검증 후 GitHub 커밋·푸시
+- [ ] Cloudflare 배포 상태 확인
+
 ## 다음 개선
 
 - [ ] 다른 브라우저로 가져오기 안내
