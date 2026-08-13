@@ -8,11 +8,11 @@ const findings = [];
 const finding = (label, present) => { if (present) throw new Error(`QA 결함 재현: ${label}`); findings.push({ label, present }); console.log(`PASS · 결함 재현 없음 — ${label}`); };
 
 try {
-  first.on("dialog", (dialog) => dialog.accept());
   await Promise.all([first.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" }), second.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" })]);
   const importedUid = "sk-followup-import";
   const payload = { uid: importedUid, questions: [{ id: 995, ownerUid: importedUid, title: "UID 동기화 질문", body: "탭 간 UID 검증", tags: ["qa"], course: "QA", mode: "강의 끝", createdAt: "방금", views: 0, answers: [] }] };
   await first.locator('input[type="file"]').setInputFiles({ name: "uid.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(payload)) });
+  await first.locator(".confirmation-toast").getByRole("button", { name: "가져오기" }).click();
   await second.waitForTimeout(150);
   await second.locator(".top-actions button").last().click();
   await second.locator(".ask-modal input").first().fill("다른 탭 새 질문");

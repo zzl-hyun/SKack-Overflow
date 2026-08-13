@@ -7,7 +7,6 @@ const checks = [];
 const note = (label, passed) => { checks.push({ label, passed }); console.log(`${passed ? "PASS" : "GAP"} · ${label}`); };
 
 try {
-  page.on("dialog", (dialog) => dialog.accept());
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: "networkidle" });
@@ -45,6 +44,8 @@ try {
   await page.locator(".skack-comment").getByRole("button", { name: "저장" }).click();
   note("댓글 작성자가 댓글을 수정한다", await page.getByText("QA 수정 댓글").isVisible());
   await page.locator(".skack-comment").getByRole("button", { name: "삭제" }).click();
+  note("댓글 삭제가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
+  await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();
   note("댓글 작성자가 댓글을 삭제한다", !(await page.getByText("QA 수정 댓글").isVisible()));
 
   await page.keyboard.press("Escape");
@@ -65,8 +66,12 @@ try {
   await ownAnswer.getByRole("button", { name: "저장" }).click();
   note("답변 작성자가 답변을 수정한다", await ownAnswer.getByText("QA 수정 답변").isVisible());
   await ownAnswer.getByRole("button", { name: "삭제" }).click();
+  note("힌트 삭제가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
+  await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();
   note("답변 작성자가 답변을 삭제한다", !(await page.getByText("QA 수정 답변").isVisible()));
   await page.locator(".question-body").getByRole("button", { name: "삭제" }).click();
+  note("질문 삭제가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
+  await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();
   note("질문 작성자가 질문을 삭제한다", !(await page.locator(".detail-modal").isVisible()));
 
   await page.locator(".filter-tabs button").filter({ hasText: "모든 막힘" }).click();
@@ -84,6 +89,8 @@ try {
   note("로컬 기록을 JSON으로 내보낸다", download.suggestedFilename() === "skack-overflow-local-data.json");
   const previousUid = await page.evaluate(() => localStorage.getItem("skack-overflow-anon-uid"));
   await page.locator(".data-tools").getByRole("button", { name: "초기화" }).click();
+  note("기록 초기화가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
+  await page.locator(".confirmation-toast").getByRole("button", { name: "초기화" }).click();
   note("로컬 기록 초기화가 새 익명 UID를 만든다", previousUid !== await page.evaluate(() => localStorage.getItem("skack-overflow-anon-uid")));
   note("로컬 기록 초기화가 작성 질문을 제거한다", (await page.locator(".question-row").filter({ hasText: "QA 수정 질문" }).count()) === 0);
 } finally {
