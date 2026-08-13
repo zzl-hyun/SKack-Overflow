@@ -1,6 +1,6 @@
 import { chromium } from "playwright";
 
-const browser = await chromium.launch({ headless: true, executablePath: "/usr/bin/chromium" });
+const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium" });
 const context = await browser.newContext();
 const page = await context.newPage();
 const errors = [];
