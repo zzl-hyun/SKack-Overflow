@@ -105,7 +105,7 @@
 - [x] Cloudflare Workers·KV 연결 상태와 배포 구성 점검
 - [x] Workers API와 KV 영속성 계층 구현
 - [x] 프런트엔드의 질문·힌트·댓글 데이터 흐름 전환
-- [ ] 로컬·원격 검증 후 GitHub 커밋·푸시
+- [x] 로컬·원격 검증 후 GitHub 커밋·푸시 (`d11a112`)
 - [ ] Cloudflare 배포 상태 확인
 
 ## 다음 개선
