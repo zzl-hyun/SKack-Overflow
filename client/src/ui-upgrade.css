@@ -1,0 +1,246 @@
+/* Quiet Signal UI/UX upgrade: editorial archive density, one continuous signal timeline, and explicit keyboard focus. */
+
+:root {
+  --archive-ink: #18221f;
+  --archive-teal: #2e7674;
+  --archive-orange: #e8663d;
+  --archive-paper: #f7f8f8;
+}
+
+.topbar {
+  isolation: isolate;
+  border-bottom-color: rgba(24, 34, 31, 0.23);
+}
+
+.topbar::before {
+  content: "SIGNAL ARCHIVE / OPEN";
+  position: absolute;
+  right: clamp(184px, 19vw, 274px);
+  top: 9px;
+  color: rgba(46, 118, 116, 0.62);
+  font: 7px/1 "IBM Plex Mono", monospace;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+}
+
+.skack-logo {
+  position: relative;
+  padding-right: 23px;
+}
+
+.skack-logo::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  width: 13px;
+  height: 10px;
+  transform: translateY(-50%);
+  background:
+    linear-gradient(var(--archive-teal), var(--archive-teal)) 0 0 / 2px 3px no-repeat,
+    linear-gradient(var(--archive-teal), var(--archive-teal)) 0 7px / 2px 3px no-repeat,
+    linear-gradient(var(--archive-teal), var(--archive-teal)) 6px 4px / 7px 1px no-repeat,
+    linear-gradient(var(--archive-orange), var(--archive-orange)) 11px 0 / 2px 3px no-repeat,
+    linear-gradient(var(--archive-orange), var(--archive-orange)) 11px 7px / 2px 3px no-repeat;
+  opacity: 0.9;
+}
+
+.skack-hero {
+  padding-top: 65px;
+  padding-bottom: 43px;
+}
+
+.skack-hero::after {
+  box-shadow: 0 0 0 5px var(--archive-paper);
+}
+
+.hero-copy::after {
+  content: "OBSERVATION RECORD · 계속되는 막힘 신호";
+  display: block;
+  width: fit-content;
+  margin-top: 20px;
+  color: var(--archive-teal);
+  border-top: 1px solid rgba(46, 118, 116, 0.45);
+  padding-top: 7px;
+  font: 8px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.06em;
+}
+
+.question-toolbar {
+  position: relative;
+  padding-top: 22px;
+  border-bottom-width: 2px;
+}
+
+.question-toolbar::before {
+  content: "LOG STREAM / FILTER + OBSERVE";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  color: var(--archive-teal);
+  font: 7px/1 "IBM Plex Mono", monospace;
+  letter-spacing: 0.12em;
+}
+
+.filter-tabs button,
+.sort-tabs button,
+.tag-cloud button,
+.data-tools button {
+  transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.filter-tabs button:hover,
+.tag-cloud button:hover {
+  transform: translateY(-1px);
+}
+
+.filter-tabs button:active,
+.sort-tabs button:active,
+.tag-cloud button:active,
+.data-tools button:active,
+.question-row:active {
+  transform: scale(0.98);
+}
+
+.toolbar-right label:focus-within {
+  border-bottom-color: var(--archive-teal);
+  box-shadow: 0 4px 0 -3px rgba(46, 118, 116, 0.35);
+}
+
+.question-layout {
+  background: linear-gradient(90deg, rgba(46, 118, 116, 0.03), transparent 24%, transparent 78%, rgba(232, 102, 61, 0.025));
+}
+
+.question-row {
+  position: relative;
+}
+
+.question-row::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: transparent;
+  transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), width 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.question-row:hover::after,
+.question-row:focus-visible::after {
+  width: 29px;
+  background: var(--archive-orange);
+}
+
+.question-row:focus-visible,
+.filter-tabs button:focus-visible,
+.sort-tabs button:focus-visible,
+.tag-cloud button:focus-visible,
+.data-tools button:focus-visible,
+.topbar button:focus-visible,
+.skack-logo:focus-visible {
+  outline: 2px solid var(--archive-orange);
+  outline-offset: 3px;
+}
+
+.side-panel {
+  position: sticky;
+  top: 121px;
+  align-self: start;
+  min-height: 520px;
+  padding-top: 48px;
+  background:
+    linear-gradient(90deg, transparent 0 16px, rgba(46, 118, 116, 0.26) 16px 17px, transparent 17px),
+    rgba(24, 34, 31, 0.025);
+}
+
+.side-panel::before {
+  content: "ARCHIVE MARGIN / LIVE";
+  position: absolute;
+  left: 31px;
+  top: 18px;
+  color: var(--archive-teal);
+  font: 8px/1 "IBM Plex Mono", monospace;
+  letter-spacing: 0.11em;
+}
+
+.side-panel::after {
+  content: "관찰 중 · 막힘 단계는 힌트가 도착하면 갱신됩니다.";
+  position: absolute;
+  left: 31px;
+  right: 17px;
+  bottom: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  color: var(--muted);
+  font: 9px/1.55 "Noto Sans KR", sans-serif;
+}
+
+.side-panel > section {
+  position: relative;
+  padding-left: 14px;
+}
+
+.side-panel > section::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 5px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--archive-teal);
+  border-radius: 50%;
+  background: var(--archive-paper);
+}
+
+.signal-key,
+.tag-cloud,
+.data-tools {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 14px;
+}
+
+.signal-key p,
+.tag-cloud p,
+.data-tools::before {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--archive-teal);
+  font: 8px/1 "IBM Plex Mono", monospace;
+  letter-spacing: 0.1em;
+}
+
+.data-tools::before {
+  content: "ARCHIVE TOOLS / LOCAL";
+}
+
+.data-tools {
+  padding-left: 14px;
+}
+
+.data-tools::before {
+  margin-left: -14px;
+}
+
+@media (max-width: 900px) {
+  .topbar::before { display: none; }
+  .side-panel {
+    position: relative;
+    top: auto;
+    min-height: 0;
+    padding-top: 46px;
+  }
+  .side-panel::after { position: relative; left: 0; right: auto; bottom: auto; display: block; margin: 22px 0 0 14px; }
+}
+
+@media (max-width: 620px) {
+  .skack-logo { padding-right: 0; }
+  .skack-logo::after,
+  .hero-copy::after,
+  .question-toolbar::before { display: none; }
+  .question-toolbar { padding-top: 12px; }
+  .side-panel { background: rgba(24, 34, 31, 0.025); }
+  .side-panel::before { left: 16px; }
+  .side-panel > section { padding-left: 14px; }
+}
