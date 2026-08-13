@@ -32,6 +32,7 @@ import {
 import {
   MarkdownContent,
   MarkdownEditor,
+  SKACK_IMAGE_PREFIX,
 } from "@/components/MarkdownEditor";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -504,12 +505,31 @@ function ImageAttachments({
   );
 }
 
+function resolveImageSource(images: ImageAttachment[], url: string) {
+  if (!url.startsWith(SKACK_IMAGE_PREFIX)) return url;
+  return (
+    images.find(
+      image => image.id === url.slice(SKACK_IMAGE_PREFIX.length)
+    )?.src || ""
+  );
+}
+
+function unembeddedImages(
+  markdown: string,
+  images?: ImageAttachment[]
+): ImageAttachment[] | undefined {
+  if (!images?.length) return images;
+  return images.filter(
+    image => !markdown.includes(`${SKACK_IMAGE_PREFIX}${image.id}`)
+  );
+}
+
 function PasteImageHint({ processing = false }: { processing?: boolean }) {
   return (
     <p className="image-paste-hint">
       {processing
         ? "이미지를 줄이는 중… 잠시만 기다려주세요."
-        : "이미지를 이 입력창에 붙여넣으면 자동으로 줄여서 첨부해요. (최대 3장)"}
+        : "이미지를 붙여넣으면 커서 위치에 넣어요. 자동으로 줄여서 최대 3장까지 첨부해요."}
     </p>
   );
 }
@@ -531,6 +551,7 @@ export default function Home() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const importInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const editorImageReservationsRef = useRef<Record<string, number>>({});
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tagsText, setTagsText] = useState("");
@@ -765,6 +786,38 @@ export default function Home() {
     setNotice(message);
     window.setTimeout(() => setNotice(""), 2800);
   };
+  async function uploadEditorImage(
+    scope: string,
+    file: File,
+    currentImages: ImageAttachment[],
+    onImageAdded: (image: ImageAttachment) => void
+  ) {
+    const reservations = editorImageReservationsRef.current;
+    const reserved = reservations[scope] || 0;
+    const remaining = IMAGE_LIMITS.maxCount - currentImages.length - reserved;
+    if (remaining <= 0) {
+      tell(`이미지는 한 글에 최대 ${IMAGE_LIMITS.maxCount}장까지 넣을 수 있어요.`);
+      throw new Error("이미지 첨부 개수를 초과했어요.");
+    }
+
+    reservations[scope] = reserved + 1;
+    setImageProcessing(count => count + 1);
+    try {
+      const image = await downscaleImage(file);
+      onImageAdded(image);
+      tell("이미지를 줄여서 에디터에 넣었어요.");
+      return {
+        url: `${SKACK_IMAGE_PREFIX}${image.id}`,
+        previewUrl: image.src,
+      };
+    } catch (error) {
+      tell("이미지를 줄이지 못했어요. 다른 이미지로 다시 붙여넣어 주세요.");
+      throw error;
+    } finally {
+      reservations[scope] = Math.max(0, (reservations[scope] || 1) - 1);
+      setImageProcessing(count => Math.max(0, count - 1));
+    }
+  }
   async function pasteImages(
     event: ClipboardEvent<HTMLElement>,
     currentImages: ImageAttachment[],
@@ -1927,23 +1980,15 @@ export default function Home() {
             <MarkdownEditor
               value={body}
               onChange={setBody}
-              onPaste={event =>
-                void pasteImages(event, questionImages, images =>
+              onImageUpload={file =>
+                uploadEditorImage("question", file, questionImages, image =>
                   setQuestionImages(current =>
-                    [...current, ...images].slice(0, IMAGE_LIMITS.maxCount)
+                    [...current, image].slice(0, IMAGE_LIMITS.maxCount)
                   )
                 )
               }
+              resolveImageUrl={url => resolveImageSource(questionImages, url)}
               placeholder="어디까지 해봤는지 적어주세요."
-            />
-            <ImageAttachments
-              images={questionImages}
-              editable
-              onRemove={id =>
-                setQuestionImages(images =>
-                  images.filter(image => image.id !== id)
-                )
-              }
             />
             <PasteImageHint processing={imageProcessing > 0} />
             <input
@@ -2015,24 +2060,34 @@ export default function Home() {
                           body,
                         })
                       }
-                      onPaste={event =>
-                        void pasteImages(event, questionEdit.images, images =>
-                          setQuestionEdit(current =>
-                            current
-                              ? {
-                                  ...current,
-                                  images: [...current.images, ...images].slice(
-                                    0,
-                                    IMAGE_LIMITS.maxCount
-                                  ),
-                                }
-                              : current
-                          )
+                      onImageUpload={file =>
+                        uploadEditorImage(
+                          "question-edit",
+                          file,
+                          questionEdit.images,
+                          image =>
+                            setQuestionEdit(current =>
+                              current
+                                ? {
+                                    ...current,
+                                    images: [...current.images, image].slice(
+                                      0,
+                                      IMAGE_LIMITS.maxCount
+                                    ),
+                                  }
+                                : current
+                            )
                         )
+                      }
+                      resolveImageUrl={url =>
+                        resolveImageSource(questionEdit.images, url)
                       }
                     />
                     <ImageAttachments
-                      images={questionEdit.images}
+                      images={unembeddedImages(
+                        questionEdit.body,
+                        questionEdit.images
+                      )}
                       editable
                       onRemove={id =>
                         setQuestionEdit(current =>
@@ -2071,8 +2126,10 @@ export default function Home() {
             </div>
             {!questionEdit && (
               <article className="question-body">
-                <MarkdownContent markdown={detail.body} />
-                <ImageAttachments images={detail.images} />
+                <MarkdownContent markdown={detail.body} images={detail.images} />
+                <ImageAttachments
+                  images={unembeddedImages(detail.body, detail.images)}
+                />
                 <small>
                   {detail.createdAt} · <Eye size={12} /> {detail.views}회 조회
                 </small>
@@ -2172,24 +2229,34 @@ export default function Home() {
                                   body,
                                 })
                               }
-                              onPaste={event =>
-                                void pasteImages(event, answerEdit.images, images =>
-                                  setAnswerEdit(current =>
-                                    current
-                                      ? {
-                                          ...current,
-                                          images: [...current.images, ...images].slice(
-                                            0,
-                                            IMAGE_LIMITS.maxCount
-                                          ),
-                                        }
-                                      : current
-                                  )
+                              onImageUpload={file =>
+                                uploadEditorImage(
+                                  "answer-edit",
+                                  file,
+                                  answerEdit.images,
+                                  image =>
+                                    setAnswerEdit(current =>
+                                      current
+                                        ? {
+                                            ...current,
+                                            images: [...current.images, image].slice(
+                                              0,
+                                              IMAGE_LIMITS.maxCount
+                                            ),
+                                          }
+                                        : current
+                                    )
                                 )
+                              }
+                              resolveImageUrl={url =>
+                                resolveImageSource(answerEdit.images, url)
                               }
                             />
                             <ImageAttachments
-                              images={answerEdit.images}
+                              images={unembeddedImages(
+                                answerEdit.body,
+                                answerEdit.images
+                              )}
                               editable
                               onRemove={id =>
                                 setAnswerEdit(current =>
@@ -2216,8 +2283,13 @@ export default function Home() {
                           </>
                         ) : (
                           <>
-                            <MarkdownContent markdown={answer.body} />
-                            <ImageAttachments images={answer.images} />
+                            <MarkdownContent
+                              markdown={answer.body}
+                              images={answer.images}
+                            />
+                            <ImageAttachments
+                              images={unembeddedImages(answer.body, answer.images)}
+                            />
                           </>
                         )}
                         <div className="answer-by">
@@ -2309,23 +2381,15 @@ export default function Home() {
               <MarkdownEditor
                 value={answerText}
                 onChange={setAnswerText}
-                onPaste={event =>
-                  void pasteImages(event, answerImages, images =>
+                onImageUpload={file =>
+                  uploadEditorImage("answer", file, answerImages, image =>
                     setAnswerImages(current =>
-                      [...current, ...images].slice(0, IMAGE_LIMITS.maxCount)
+                      [...current, image].slice(0, IMAGE_LIMITS.maxCount)
                     )
                   )
                 }
+                resolveImageUrl={url => resolveImageSource(answerImages, url)}
                 placeholder="답변 내용을 적어주세요."
-              />
-              <ImageAttachments
-                images={answerImages}
-                editable
-                onRemove={id =>
-                  setAnswerImages(images =>
-                    images.filter(image => image.id !== id)
-                  )
-                }
               />
               <PasteImageHint processing={imageProcessing > 0} />
               <div className="answer-actions">

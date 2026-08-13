@@ -887,6 +887,12 @@
   box-shadow: 0 20px 55px rgba(23, 33, 30, 0.2);
 }
 
+.ask-modal {
+  width: min(960px, 100%);
+  max-height: calc(100vh - 32px);
+  padding: 38px 42px 34px;
+}
+
 .detail-modal {
   width: min(880px, 100%);
 }
@@ -989,6 +995,27 @@
   padding: 12px 14px;
   font-family: var(--skack-hand-font);
   line-height: 1.65;
+}
+
+.ask-modal .skack-markdown-editor .milkdown .ProseMirror {
+  min-height: 270px;
+  max-height: 500px;
+}
+
+.skack-markdown-editor .milkdown .milkdown-image-block {
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px dashed var(--skack-line);
+  border-radius: 7px;
+  background: var(--skack-soft);
+}
+
+.skack-markdown-editor .milkdown .milkdown-image-block img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 5px;
 }
 
 .skack-markdown-editor .milkdown .milkdown-top-bar {
@@ -1930,6 +1957,10 @@
     padding: 24px 18px;
   }
 
+  .ask-modal .skack-markdown-editor .milkdown .ProseMirror {
+    min-height: 220px;
+  }
+
   .detail-title h1 {
     font-size: 24px;
   }
@@ -1981,6 +2012,10 @@
 
   .ask-modal h2 {
     font-size: 26px;
+  }
+
+  .ask-modal .skack-markdown-editor .milkdown .ProseMirror {
+    min-height: 190px;
   }
 
   .detail-title {
