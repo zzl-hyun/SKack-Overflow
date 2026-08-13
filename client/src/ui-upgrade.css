@@ -1,4 +1,4 @@
-/* Friendly SKACK: an approachable, low-pressure anonymous question community. */
+/* Friendly SKack: an approachable, low-pressure anonymous question community. */
 
 :root {
   --skack-coral: #f26b4e;
@@ -626,7 +626,7 @@ body,
   }
 }
 
-/* Friendly SKACK finishing pass: light study-note surfaces and repeatable coral/mint motifs. */
+/* Friendly SKack finishing pass: light study-note surfaces and repeatable coral/mint motifs. */
 .question-toolbar {
   background: linear-gradient(90deg, #fff 0%, #f6fffc 55%, #fff8ee 100%) !important;
 }

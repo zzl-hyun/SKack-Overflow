@@ -25,15 +25,15 @@ try {
     };
   });
 
-  await check(mark.wordmarkColor === "rgb(230, 56, 77)" && mark.overflowColor === mark.wordmarkColor, "SKACK과 Overflow 워드마크가 동일한 SK 레드를 사용한다");
-  await check(mark.wordmarkFontFamily.includes("IBM Plex Mono") && mark.overflowFontFamily === mark.wordmarkFontFamily, "SKACK과 Overflow 워드마크가 동일한 IBM Plex Mono 글꼴을 사용한다");
-  await check(mark.wordmarkFontWeight === "700" && mark.overflowFontWeight === mark.wordmarkFontWeight, "SKACK과 Overflow 워드마크의 굵기가 동일하다");
-  await check(mark.wordmarkLetterSpacing === mark.overflowLetterSpacing, "SKACK과 Overflow 워드마크의 자간이 동일하다");
+  await check(mark.wordmarkColor === "rgb(230, 56, 77)" && mark.overflowColor === mark.wordmarkColor, "SKack과 Overflow 워드마크가 동일한 SK 레드를 사용한다");
+  await check(mark.wordmarkFontFamily.includes("IBM Plex Mono") && mark.overflowFontFamily === mark.wordmarkFontFamily, "SKack과 Overflow 워드마크가 동일한 IBM Plex Mono 글꼴을 사용한다");
+  await check(mark.wordmarkFontWeight === "700" && mark.overflowFontWeight === mark.wordmarkFontWeight, "SKack과 Overflow 워드마크의 굵기가 동일하다");
+  await check(mark.wordmarkLetterSpacing === mark.overflowLetterSpacing, "SKack과 Overflow 워드마크의 자간이 동일하다");
   const colorRoles = await page.evaluate(() => ({
     heroCatchphrase: getComputedStyle(document.querySelector(".hero-copy h1 em")).color,
     primaryAction: getComputedStyle(document.querySelector(".top-actions > button:last-child")).backgroundColor,
   }));
-  await check(colorRoles.heroCatchphrase === "rgb(242, 107, 78)", "‘SKACK.’ 캐치프레이즈는 친화적 코랄 포인트를 사용한다");
+  await check(colorRoles.heroCatchphrase === "rgb(242, 107, 78)", "‘SKack.’ 캐치프레이즈는 친화적 코랄 포인트를 사용한다");
   await check(colorRoles.primaryAction === "rgb(242, 107, 78)", "‘질문 올리기’ 행동은 친화적 코랄 포인트를 사용한다");
 } finally {
   await browser.close();

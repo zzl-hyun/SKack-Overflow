@@ -7,14 +7,14 @@ const errors = [];
 page.on("pageerror", (error) => errors.push(`pageerror: ${error.message}`));
 page.on("console", (message) => { if (message.type() === "error") errors.push(`console: ${message.text()} @ ${message.location().url}`); });
 const check = async (condition, label) => { if (!condition) throw new Error(`검증 실패: ${label}`); console.log(`PASS · ${label}`); };
-const title = "검증용 SKACK 질문: 답변 채택 권한을 확인하고 싶어요.";
+const title = "검증용 SKack 질문: 답변 채택 권한을 확인하고 싶어요.";
 
 try {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: "networkidle" });
   const ownerUid = await page.evaluate(() => localStorage.getItem("skack-overflow-anon-uid"));
-  await check(Boolean(ownerUid?.startsWith("sk-")), "브라우저별 SKACK 익명 UID 생성");
+  await check(Boolean(ownerUid?.startsWith("sk-")), "브라우저별 SKack 익명 UID 생성");
   await check(await page.locator(".question-row").count() === 12, "초기 질문 12개 표시");
 
   await page.locator(".filter-tabs button").filter({ hasText: "답변 달린 글" }).click();
