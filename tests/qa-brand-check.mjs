@@ -30,11 +30,11 @@ try {
   await check(mark.wordmarkFontWeight === "700" && mark.overflowFontWeight === mark.wordmarkFontWeight, "SKACK과 Overflow 워드마크의 굵기가 동일하다");
   await check(mark.wordmarkLetterSpacing === mark.overflowLetterSpacing, "SKACK과 Overflow 워드마크의 자간이 동일하다");
   const colorRoles = await page.evaluate(() => ({
-    nextPerspective: getComputedStyle(document.querySelector(".hero-copy h1 em")).color,
+    heroCatchphrase: getComputedStyle(document.querySelector(".hero-copy h1 em")).color,
     primaryAction: getComputedStyle(document.querySelector(".top-actions > button:last-child")).backgroundColor,
   }));
-  await check(colorRoles.nextPerspective === "rgb(46, 118, 116)", "‘같이 풀어봐요’는 teal 연결 신호를 사용한다");
-  await check(colorRoles.primaryAction === "rgb(232, 102, 61)", "‘질문 올리기’ 행동은 Signal Orange를 사용한다");
+  await check(colorRoles.heroCatchphrase === "rgb(242, 107, 78)", "‘SKACK.’ 캐치프레이즈는 친화적 코랄 포인트를 사용한다");
+  await check(colorRoles.primaryAction === "rgb(242, 107, 78)", "‘질문 올리기’ 행동은 친화적 코랄 포인트를 사용한다");
 } finally {
   await browser.close();
 }

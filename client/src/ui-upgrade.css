@@ -1,223 +1,839 @@
-/* Quiet Signal UI/UX upgrade: editorial archive density, one continuous signal timeline, and explicit keyboard focus. */
+/* Friendly SKACK: an approachable, low-pressure anonymous question community. */
 
 :root {
-  --archive-ink: #18221f;
-  --archive-teal: #2e7674;
-  --archive-orange: #e8663d;
-  --archive-paper: #f7f8f8;
+  --skack-coral: #f26b4e;
+  --skack-coral-soft: #fff0ea;
+  --skack-mint: #278c84;
+  --skack-mint-soft: #e7f7f3;
+  --skack-sky-soft: #eaf5ff;
+  --skack-lemon: #fff6c7;
+  --skack-ink: #273332;
+  --skack-line: #dbe5e1;
+}
+
+body,
+.skack-app {
+  background: #fffdf8 !important;
+  background-image: radial-gradient(circle at 10% 7%, rgba(242, 107, 78, 0.09), transparent 21%), radial-gradient(circle at 88% 34%, rgba(39, 140, 132, 0.08), transparent 18%) !important;
 }
 
 .topbar {
-  isolation: isolate;
-  border-bottom-color: rgba(24, 34, 31, 0.23);
+  height: 76px;
+  border-bottom: 1px solid var(--skack-line) !important;
+  background: rgba(255, 253, 248, 0.92) !important;
+  box-shadow: 0 8px 22px rgba(53, 83, 76, 0.04) !important;
+}
+
+.topbar::before,
+.topbar::after,
+.topbar nav::before,
+.topbar nav::after,
+.skack-main::before {
+  display: none !important;
 }
 
 .skack-logo {
-  position: relative;
-  padding-right: 23px;
+  letter-spacing: -0.08em;
 }
 
 .skack-logo::after {
-  content: "";
-  position: absolute;
-  right: 3px;
-  top: 50%;
-  width: 13px;
-  height: 10px;
-  transform: translateY(-50%);
-  background:
-    linear-gradient(var(--archive-teal), var(--archive-teal)) 0 0 / 2px 3px no-repeat,
-    linear-gradient(var(--archive-teal), var(--archive-teal)) 0 7px / 2px 3px no-repeat,
-    linear-gradient(var(--archive-teal), var(--archive-teal)) 6px 4px / 7px 1px no-repeat,
-    linear-gradient(var(--archive-orange), var(--archive-orange)) 11px 0 / 2px 3px no-repeat,
-    linear-gradient(var(--archive-orange), var(--archive-orange)) 11px 7px / 2px 3px no-repeat;
-  opacity: 0.9;
+  display: none;
 }
 
-.skack-hero {
-  padding-top: 65px;
-  padding-bottom: 43px;
+.topbar nav {
+  gap: 7px;
+  padding-left: 0;
 }
 
-.skack-hero::after {
-  box-shadow: 0 0 0 5px var(--archive-paper);
+.topbar nav button {
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #63716e;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 11px;
 }
 
+.topbar nav button:hover,
+.topbar nav button.active {
+  background: var(--skack-mint-soft);
+  color: var(--skack-mint);
+}
+
+.top-actions {
+  gap: 10px;
+}
+
+.top-actions > button:last-child,
+.list-head > button {
+  border: 0 !important;
+  border-radius: 999px;
+  background: var(--skack-coral) !important;
+  box-shadow: 0 4px 0 #d9563c !important;
+  color: #fff !important;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.top-actions > button:last-child:hover,
+.list-head > button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #d9563c !important;
+}
+
+.top-actions > button:last-child:active,
+.list-head > button:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 2px 0 #d9563c !important;
+}
+
+.incoming-chip {
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: var(--skack-lemon) !important;
+  color: #79611f !important;
+}
+
+.skack-main {
+  max-width: 1180px;
+  padding-bottom: 42px;
+}
+
+.skack-hero.human-hero {
+  margin: 30px 0 22px;
+  padding: 36px 40px !important;
+  border: 1px solid #ffd7cc !important;
+  border-radius: 28px;
+  background: linear-gradient(112deg, #fff1eb 0%, #fffaf4 54%, #eaf8f5 100%) !important;
+  overflow: hidden;
+}
+
+.skack-hero::before,
+.skack-hero::after,
+.human-hero .hero-copy::before,
+.human-hero .hero-copy::after,
 .hero-copy::after {
-  content: "답변을 기다리는 질문도, 답변이 달린 질문도 바로 확인해 보세요.";
-  display: block;
-  width: fit-content;
-  margin-top: 20px;
-  color: var(--archive-teal);
-  border-top: 1px solid rgba(46, 118, 116, 0.45);
-  padding-top: 7px;
-  font: 8px/1.4 "IBM Plex Mono", monospace;
-  letter-spacing: 0.06em;
+  display: none !important;
+}
+
+.human-hero .hero-copy {
+  padding: 0 !important;
+}
+
+.human-hero .hero-copy p {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px !important;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--skack-coral) !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+}
+
+.human-hero .hero-copy p::before {
+  content: "✦";
+  margin: 0;
+  color: var(--skack-coral);
+}
+
+.human-hero .hero-copy h1 {
+  color: var(--skack-ink);
+  font-size: clamp(45px, 5.2vw, 68px) !important;
+  letter-spacing: -0.1em;
+  line-height: 0.98;
+}
+
+.human-hero .hero-copy h1 em {
+  color: var(--skack-coral) !important;
+}
+
+.hero-ledger {
+  margin-top: 22px !important;
+  border: 0 !important;
+  gap: 8px !important;
+}
+
+.hero-ledger span {
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  border: 0 !important;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #6d7774 !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 10px !important;
+}
+
+.hero-ledger b {
+  color: var(--skack-ink) !important;
+  font-family: "IBM Plex Mono", monospace !important;
+}
+
+.hero-evidence {
+  align-self: stretch;
+  width: min(330px, 34%) !important;
+  margin: 0 !important;
+  padding: 14px 17px;
+  border: 0 !important;
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 10px 25px rgba(55, 93, 85, 0.07);
+}
+
+.hero-evidence::before {
+  display: none;
+}
+
+.hero-evidence > p {
+  margin: 0 0 6px !important;
+  color: var(--skack-mint) !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: -0.02em !important;
+}
+
+.hero-evidence button,
+.hero-evidence > div {
+  padding: 10px 0 !important;
+  border-top: 1px dashed #dfe9e5 !important;
+}
+
+.hero-evidence strong {
+  font-size: 12px !important;
 }
 
 .question-toolbar {
-  position: relative;
-  padding-top: 22px;
-  border-bottom-width: 2px;
+  top: 76px;
+  margin: 0 0 15px;
+  padding: 10px 13px !important;
+  border: 1px solid var(--skack-line) !important;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 8px 20px rgba(44, 78, 71, 0.035);
+}
+
+.question-toolbar::before,
+.question-toolbar::after {
+  display: none !important;
+}
+
+.filter-tabs {
+  gap: 6px;
 }
 
 .filter-tabs button,
-.sort-tabs button,
-.tag-cloud button,
-.data-tools button {
-  transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+.sort-tabs button {
+  min-height: 34px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #f3f7f5 !important;
+  color: #63716e !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 10px !important;
+  text-decoration: none !important;
 }
 
-.filter-tabs button:hover,
-.tag-cloud button:hover {
-  transform: translateY(-1px);
+.filter-tabs button.active {
+  background: var(--skack-mint) !important;
+  color: #fff !important;
 }
 
-.filter-tabs button:active,
-.sort-tabs button:active,
-.tag-cloud button:active,
-.data-tools button:active,
-.question-row:active {
-  transform: scale(0.98);
+.filter-tabs button.active small {
+  color: #d9fff6 !important;
 }
 
-.toolbar-right label:focus-within {
-  border-bottom-color: var(--archive-teal);
-  box-shadow: 0 4px 0 -3px rgba(46, 118, 116, 0.35);
+.sort-tabs {
+  gap: 5px;
+  border: 0 !important;
+}
+
+.sort-tabs button.active {
+  background: var(--skack-sky-soft) !important;
+  color: #39708b !important;
+}
+
+.toolbar-right label {
+  border: 1px solid #dce7e3 !important;
+  border-radius: 999px;
+  padding: 7px 10px !important;
+  background: #fff;
 }
 
 .question-layout {
-  background: linear-gradient(90deg, rgba(46, 118, 116, 0.03), transparent 24%, transparent 78%, rgba(232, 102, 61, 0.025));
+  gap: 16px;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.question-list,
+.side-panel {
+  border: 1px solid var(--skack-line) !important;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.question-list {
+  padding: 24px !important;
+}
+
+.question-list::before {
+  display: none !important;
+}
+
+.list-head {
+  align-items: center !important;
+  padding: 0 0 15px !important;
+  border-bottom: 1px solid #e7eeeb !important;
+}
+
+.list-head h2 {
+  font-size: 23px !important;
+}
+
+.list-head h2::after {
+  content: "사소한 질문도 괜찮아요";
+  display: block;
+  margin-top: 5px;
+  color: #77837f;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
 .question-row {
-  position: relative;
+  grid-template-columns: 62px minmax(0, 1fr) 58px !important;
+  margin-top: 11px;
+  padding: 15px 13px !important;
+  border: 1px solid #e5ece9 !important;
+  border-left-width: 1px !important;
+  border-radius: 17px;
+  background: #fff !important;
+  box-shadow: 0 2px 0 rgba(45, 72, 66, 0.02);
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .question-row::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 16px;
-  height: 1px;
-  background: transparent;
-  transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), width 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  display: none;
 }
 
-.question-row:hover::after,
-.question-row:focus-visible::after {
-  width: 29px;
-  background: var(--archive-orange);
+.question-row:hover {
+  padding-left: 13px !important;
+  transform: translateY(-2px) !important;
+  border-color: #b9dcd5 !important;
+  background: #fff !important;
+  box-shadow: 0 8px 18px rgba(41, 94, 83, 0.08) !important;
 }
 
-.question-row:focus-visible,
-.filter-tabs button:focus-visible,
-.sort-tabs button:focus-visible,
-.tag-cloud button:focus-visible,
-.data-tools button:focus-visible,
-.topbar button:focus-visible,
-.skack-logo:focus-visible {
-  outline: 2px solid var(--archive-orange);
-  outline-offset: 3px;
+.question-row.needs-help {
+  border-left-color: #ffc0ad !important;
+}
+
+.question-row.has-hint {
+  border-left-color: #9edfd2 !important;
+}
+
+.question-row.is-solved {
+  border-left-color: #bddfb5 !important;
+}
+
+.signal-stage {
+  border-radius: 13px;
+  background: #f7fbfa !important;
+}
+
+.visibility-flags span {
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 9px !important;
+}
+
+.help-flag {
+  background: var(--skack-coral-soft) !important;
+  color: #d85b41 !important;
+}
+
+.hint-flag {
+  background: var(--skack-mint-soft) !important;
+  color: #16746c !important;
+}
+
+.solved-flag {
+  background: #eff8eb !important;
+  color: #5b8555 !important;
+}
+
+.tag-row span {
+  border: 0 !important;
+  border-radius: 999px;
+  background: #f0f6f4 !important;
+  padding: 4px 7px !important;
 }
 
 .side-panel {
-  position: sticky;
-  top: 121px;
-  align-self: start;
-  min-height: 520px;
-  padding-top: 48px;
-  background:
-    linear-gradient(90deg, transparent 0 16px, rgba(46, 118, 116, 0.26) 16px 17px, transparent 17px),
-    rgba(24, 34, 31, 0.025);
+  top: 98px;
+  min-height: auto !important;
+  padding: 23px 18px 22px !important;
+  box-shadow: 0 8px 18px rgba(44, 78, 71, 0.035);
 }
 
-.side-panel::before {
-  content: "내 기록";
-  position: absolute;
-  left: 31px;
-  top: 18px;
-  color: var(--archive-teal);
-  font: 8px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.11em;
-}
-
-.side-panel::after {
-  content: "답변이 달리면 글 상태가 갱신됩니다.";
-  position: absolute;
-  left: 31px;
-  right: 17px;
-  bottom: 18px;
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
-  color: var(--muted);
-  font: 9px/1.55 "Noto Sans KR", sans-serif;
+.side-panel::before,
+.side-panel::after,
+.side-panel > section::before,
+.side-panel .rules::before {
+  display: none !important;
 }
 
 .side-panel > section {
-  position: relative;
-  padding-left: 14px;
+  padding-left: 0 !important;
 }
 
-.side-panel > section::before {
-  content: "";
-  position: absolute;
-  left: -5px;
-  top: 5px;
-  width: 7px;
-  height: 7px;
-  border: 2px solid var(--archive-teal);
-  border-radius: 50%;
-  background: var(--archive-paper);
+.side-panel h2 {
+  font-size: 22px !important;
+}
+
+.empty-activity {
+  border: 0 !important;
+  border-radius: 14px;
+  background: var(--skack-lemon) !important;
+  padding: 13px !important;
 }
 
 .signal-key,
 .tag-cloud,
 .data-tools {
-  border-top: 1px solid var(--line);
-  margin-top: 22px;
-  padding-top: 14px;
+  margin-top: 18px !important;
+  padding-top: 15px !important;
+  border-top: 1px dashed #d9e4df !important;
 }
 
 .signal-key p,
 .tag-cloud p,
 .data-tools::before {
+  color: #6d7d78 !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+}
+
+.data-tools::before {
+  content: "내 기록 관리" !important;
+  position: static !important;
+}
+
+.tag-cloud button {
+  border-radius: 999px;
+  background: #f2f7f5 !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+}
+
+.ask-modal,
+.detail-modal {
+  border: 1px solid #e1e9e6 !important;
+  border-radius: 26px;
+  box-shadow: 0 24px 60px rgba(36, 67, 60, 0.2) !important;
+}
+
+.ask-modal h2 {
+  color: var(--skack-ink);
+}
+
+.ask-modal h2::after {
+  content: "사소한 질문도 좋아요. 어디까지 해봤는지만 적어봐요.";
   display: block;
-  margin: 0 0 10px;
-  color: var(--archive-teal);
-  font: 8px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.1em;
+  margin-top: 8px;
+  color: #73817c;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 
-.data-tools::before {
-  content: "내 기록 관리";
+.mode-buttons button {
+  border-radius: 999px;
+  background: #f2f6f4 !important;
+  font-family: "Noto Sans KR", sans-serif !important;
 }
 
-.data-tools {
-  padding-left: 14px;
+.mode-buttons button.active {
+  background: var(--skack-mint) !important;
 }
 
-.data-tools::before {
-  margin-left: -14px;
+.ask-bottom button,
+.answer-form > div > button,
+.comment-box > button {
+  border-radius: 999px;
+  background: var(--skack-coral) !important;
+  box-shadow: 0 3px 0 #d9563c;
+}
+
+.answer-form {
+  border-top: 1px dashed #d9e4df !important;
+}
+
+.answer-form::before {
+  content: "한 줄만 남겨도 도움이 돼요.";
+  display: block;
+  margin-bottom: 8px;
+  color: #73817c;
+  font-size: 11px;
+}
+
+.answer-card {
+  border: 1px solid #e1ebe7 !important;
+  border-left: 1px solid #e1ebe7 !important;
+  border-radius: 17px;
+  background: #fff !important;
+}
+
+.answer-card.accepted {
+  border-color: #9fd9cc !important;
+  background: #f2fcf8 !important;
+}
+
+.no-answer {
+  border: 0 !important;
+  border-radius: 15px;
+  background: var(--skack-coral-soft) !important;
+}
+
+.confirmation-toast {
+  border-radius: 17px;
+  background: var(--skack-ink) !important;
 }
 
 @media (max-width: 900px) {
+  .skack-hero.human-hero {
+    display: block;
+  }
+
+  .hero-evidence {
+    width: 100% !important;
+    margin-top: 24px !important;
+  }
+
+  .question-layout {
+    gap: 13px;
+  }
+
   .side-panel {
     position: relative;
     top: auto;
-    min-height: 0;
-    padding-top: 46px;
+    display: block;
   }
-  .side-panel::after { position: relative; left: 0; right: auto; bottom: auto; display: block; margin: 22px 0 0 14px; }
 }
 
 @media (max-width: 620px) {
-  .skack-logo { padding-right: 0; }
-  .skack-logo::after,
-  .hero-copy::after { display: none; }
-  .question-toolbar { padding-top: 12px; }
-  .side-panel { background: rgba(24, 34, 31, 0.025); }
-  .side-panel::before { left: 16px; }
-  .side-panel > section { padding-left: 14px; }
+  .topbar {
+    height: 66px;
+  }
+
+  .topbar nav {
+    display: none;
+  }
+
+  .skack-main {
+    padding: 0 15px 30px;
+  }
+
+  .skack-hero.human-hero {
+    margin: 18px 0 14px;
+    padding: 27px 21px !important;
+    border-radius: 23px;
+  }
+
+  .human-hero .hero-copy h1 {
+    font-size: 47px !important;
+  }
+
+  .hero-ledger {
+    gap: 5px !important;
+  }
+
+  .hero-ledger span {
+    flex: 1;
+    padding: 8px 6px !important;
+    text-align: center;
+  }
+
+  .hero-evidence {
+    display: block !important;
+    padding: 12px 14px;
+  }
+
+  .hero-evidence button:nth-of-type(n + 2) {
+    display: none;
+  }
+
+  .question-toolbar {
+    top: 66px;
+    padding: 8px !important;
+    border-radius: 15px;
+  }
+
+  .question-layout {
+    margin: 0;
+  }
+
+  .question-list,
+  .side-panel {
+    border-radius: 19px;
+  }
+
+  .question-list {
+    padding: 18px 13px !important;
+  }
+
+  .list-head h2 {
+    font-size: 19px !important;
+  }
+
+  .list-head h2::after {
+    font-size: 9px;
+  }
+
+  .question-row {
+    grid-template-columns: 54px minmax(0, 1fr) !important;
+    padding: 13px 10px !important;
+    border-radius: 14px;
+  }
+
+  .question-meta {
+    display: none !important;
+  }
+
+  .toolbar-right label {
+    min-width: 0;
+  }
+
+  .ask-modal h2::after {
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Friendly SKACK finishing pass: light study-note surfaces and repeatable coral/mint motifs. */
+.question-toolbar {
+  background: linear-gradient(90deg, #fff 0%, #f6fffc 55%, #fff8ee 100%) !important;
+}
+
+.question-toolbar::before {
+  content: "✦  •  •" !important;
+  display: block !important;
+  position: absolute;
+  right: 16px;
+  top: -10px;
+  width: auto !important;
+  height: auto !important;
+  background: transparent !important;
+  color: var(--skack-coral);
+  font: 12px/1 "Noto Sans KR", sans-serif;
+  letter-spacing: 4px;
+}
+
+.question-list {
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf8 100%) !important;
+}
+
+.question-row:nth-of-type(3n + 2) {
+  background: #fbfffd !important;
+}
+
+.question-row:nth-of-type(3n + 3) {
+  background: #fffaf6 !important;
+}
+
+.question-row .signal-stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.question-row .signal-stage::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #a7dfd4;
+  box-shadow: -10px -8px 0 -1px #ffc4b5, -14px 9px 0 -1px #bde8ff;
+}
+
+.question-row:nth-of-type(3n) .signal-stage::before {
+  content: "✦";
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  color: #f5aa4c;
+  font-size: 10px;
+}
+
+.signal-stage small {
+  display: none !important;
+}
+
+.signal-stage strong {
+  margin-top: 8px !important;
+  color: #3f6d68;
+}
+
+.signal-stage span {
+  margin-top: 2px;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 8px !important;
+}
+
+.question-copy h3 {
+  color: #2c3a38 !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  line-height: 1.42 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.question-copy > p {
+  color: #65736f !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+  font-size: 11px !important;
+}
+
+.question-copy > small {
+  color: #82908c !important;
+  font-family: "Noto Sans KR", sans-serif !important;
+}
+
+.side-panel {
+  background: linear-gradient(180deg, #fafffd 0%, #fff 44%, #fffaf5 100%) !important;
+}
+
+.side-panel h2::after {
+  content: "궁금한 건 부담 없이 물어봐요.";
+  display: block;
+  margin-top: 7px;
+  color: #7b8984;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.side-panel .signal-key {
+  position: relative;
+}
+
+.side-panel .signal-key::before {
+  content: "✦";
+  position: absolute;
+  right: 0;
+  top: 13px;
+  color: #f2a94e;
+  font-size: 12px;
+}
+
+.tag-cloud button:nth-child(3n + 1) {
+  background: #fff1eb !important;
+  color: #b05f4b !important;
+}
+
+.tag-cloud button:nth-child(3n + 2) {
+  background: #eaf7ff !important;
+  color: #4c7288 !important;
+}
+
+.empty-activity::before {
+  content: "✦";
+  display: inline-block;
+  margin-right: 5px;
+  color: #e7a43f;
+}
+
+.ask-modal {
+  background: linear-gradient(145deg, #fff 0%, #fffaf4 100%) !important;
+}
+
+.ask-modal .mode-buttons {
+  padding: 7px;
+  border-radius: 16px;
+  background: #f5faf8;
+}
+
+.answer-form {
+  position: relative;
+}
+
+.answer-form::after {
+  content: "•  •  ✦";
+  position: absolute;
+  right: 0;
+  top: 16px;
+  color: #75b8ae;
+  font-size: 10px;
+  letter-spacing: 4px;
+}
+
+@media (max-width: 620px) {
+  .question-toolbar::before {
+    right: 11px;
+    top: -8px;
+    font-size: 10px;
+  }
+
+  .question-row:nth-of-type(3n + 2),
+  .question-row:nth-of-type(3n + 3) {
+    background: #fff !important;
+  }
+
+  .question-copy h3 {
+    font-size: 14px !important;
+  }
+}
+
+.hero-phrase {
+  display: block;
+  min-height: 1.96em;
+  animation: skack-phrase-in 380ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes skack-phrase-in {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-phrase {
+    animation: none;
+  }
 }
