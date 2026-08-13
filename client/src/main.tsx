@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import "@kfonts/nanum-handwritting-amseuteleudam";
 import "./index.css";
 import "./ui-refresh.css";
 

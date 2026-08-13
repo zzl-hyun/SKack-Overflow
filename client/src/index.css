@@ -29,8 +29,9 @@
   --line: var(--skack-line);
   --orange: var(--skack-red);
   --teal: var(--skack-green);
+  --skack-hand-font: "나눔손글씨 암스테르담", "NanumAmSeuTeReuDam", cursive;
   color-scheme: light;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--skack-hand-font);
 }
 
 * {

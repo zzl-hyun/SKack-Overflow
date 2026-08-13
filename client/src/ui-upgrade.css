@@ -49,7 +49,7 @@ body,
   border-radius: 999px;
   padding: 8px 10px;
   color: #63716e;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 11px;
 }
 
@@ -70,7 +70,7 @@ body,
   background: var(--skack-coral) !important;
   box-shadow: 0 4px 0 #d9563c !important;
   color: #fff !important;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--skack-hand-font);
   font-size: 12px;
   transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -129,7 +129,7 @@ body,
   border-radius: 999px;
   background: #fff;
   color: var(--skack-coral) !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 11px !important;
   font-weight: 700;
   letter-spacing: -0.02em !important;
@@ -166,13 +166,13 @@ body,
   border-radius: 13px;
   background: rgba(255, 255, 255, 0.82);
   color: #6d7774 !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 10px !important;
 }
 
 .hero-ledger b {
   color: var(--skack-ink) !important;
-  font-family: "IBM Plex Mono", monospace !important;
+  font-family: var(--skack-hand-font) !important;
 }
 
 .hero-evidence {
@@ -193,7 +193,7 @@ body,
 .hero-evidence > p {
   margin: 0 0 6px !important;
   color: var(--skack-mint) !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 10px !important;
   font-weight: 700;
   letter-spacing: -0.02em !important;
@@ -235,7 +235,7 @@ body,
   border-radius: 999px !important;
   background: #f3f7f5 !important;
   color: #63716e !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 10px !important;
   text-decoration: none !important;
 }
@@ -302,7 +302,7 @@ body,
   display: block;
   margin-top: 5px;
   color: #77837f;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--skack-hand-font);
   font-size: 10px;
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -350,7 +350,7 @@ body,
 }
 
 .visibility-flags span {
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 9px !important;
 }
 
@@ -417,7 +417,7 @@ body,
 .tag-cloud p,
 .data-tools::before {
   color: #6d7d78 !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 10px !important;
   font-weight: 700;
   letter-spacing: -0.02em !important;
@@ -432,7 +432,7 @@ body,
 .tag-cloud button {
   border-radius: 999px;
   background: #f2f7f5 !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
 }
 
 .ask-modal,
@@ -459,7 +459,7 @@ body,
 .mode-buttons button {
   border-radius: 999px;
   background: #f2f6f4 !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
 }
 
 .mode-buttons button.active {
@@ -641,7 +641,7 @@ body,
   height: auto !important;
   background: transparent !important;
   color: var(--skack-coral);
-  font: 12px/1 "Noto Sans KR", sans-serif;
+  font: 12px/1 var(--skack-hand-font);
   letter-spacing: 4px;
 }
 
@@ -694,13 +694,13 @@ body,
 
 .signal-stage span {
   margin-top: 2px;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 8px !important;
 }
 
 .question-copy h3 {
   color: #2c3a38 !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 16px !important;
   font-weight: 650 !important;
   line-height: 1.42 !important;
@@ -709,13 +709,13 @@ body,
 
 .question-copy > p {
   color: #65736f !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
   font-size: 11px !important;
 }
 
 .question-copy > small {
   color: #82908c !important;
-  font-family: "Noto Sans KR", sans-serif !important;
+  font-family: var(--skack-hand-font) !important;
 }
 
 .side-panel {

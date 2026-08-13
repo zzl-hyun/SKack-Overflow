@@ -7,6 +7,7 @@
 :root {
   --skack-radius: 10px;
   --skack-control-height: 38px;
+  --skack-meta-font: var(--skack-hand-font);
 }
 
 .skack-app {
@@ -86,7 +87,7 @@
   align-items: center;
   gap: 6px;
   color: var(--skack-muted);
-  font: 11px/1.3 "IBM Plex Mono", monospace;
+  font: 11px/1.3 var(--skack-meta-font);
   white-space: nowrap;
 }
 
@@ -143,14 +144,14 @@
 .ask-modal > p {
   margin: 0 0 12px;
   color: var(--skack-green);
-  font: 11px/1.4 "IBM Plex Mono", monospace;
+  font: 11px/1.4 var(--skack-meta-font);
   letter-spacing: 0.01em;
 }
 
 .hero-copy h1 {
   max-width: 720px;
   margin: 0;
-  min-height: 2.16em;
+  min-height: 2.35em;
   color: var(--skack-ink);
   font-size: clamp(40px, 5.8vw, 70px);
   font-weight: 800;
@@ -160,6 +161,11 @@
 
 .hero-phrase {
   display: block;
+  font-family: var(--skack-meta-font);
+  font-size: 1.12em;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
 }
 
 .hero-copy h1 em {
@@ -190,7 +196,7 @@
   padding: 10px 16px;
   border-right: 1px solid var(--skack-line);
   color: var(--skack-muted);
-  font: 10px/1.3 "IBM Plex Mono", monospace;
+  font: 10px/1.3 var(--skack-meta-font);
   white-space: nowrap;
 }
 
@@ -200,7 +206,7 @@
 
 .hero-ledger b {
   color: var(--skack-ink);
-  font: 700 20px/1 "IBM Plex Mono", monospace;
+  font: 700 20px/1 var(--skack-meta-font);
 }
 
 .hero-evidence {
@@ -213,7 +219,7 @@
 .hero-evidence > p {
   margin: 11px 0 0;
   color: var(--skack-green);
-  font: 10px/1.4 "IBM Plex Mono", monospace;
+  font: 10px/1.4 var(--skack-meta-font);
 }
 
 .hero-evidence button,
@@ -238,7 +244,7 @@
 .hero-evidence small {
   display: block;
   color: var(--skack-muted);
-  font: 10px/1.4 "IBM Plex Mono", monospace;
+  font: 10px/1.4 var(--skack-meta-font);
 }
 
 .hero-evidence strong {
@@ -303,7 +309,7 @@
 .filter-tabs small {
   margin-left: 4px;
   color: var(--skack-red);
-  font: 10px "IBM Plex Mono", monospace;
+  font: 10px var(--skack-meta-font);
 }
 
 .filter-tabs button.active small {
@@ -400,7 +406,7 @@
 
 .list-head h2 small {
   color: var(--skack-muted);
-  font: 11px "IBM Plex Mono", monospace;
+  font: 11px var(--skack-meta-font);
   letter-spacing: 0;
 }
 
@@ -476,7 +482,7 @@
   max-width: 100%;
   overflow: hidden;
   color: var(--skack-muted);
-  font: 9px/1.25 "IBM Plex Mono", monospace;
+  font: 9px/1.25 var(--skack-meta-font);
   text-overflow: ellipsis;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -496,7 +502,7 @@
   display: block;
   margin: 0;
   color: var(--skack-ink);
-  font: 700 22px/1 "IBM Plex Mono", monospace;
+  font: 700 22px/1 var(--skack-meta-font);
 }
 
 .answer-total span {
@@ -548,7 +554,7 @@
   min-height: 20px;
   padding: 0 7px;
   border-radius: 999px;
-  font: 700 9px/1 "IBM Plex Mono", monospace;
+  font: 700 9px/1 var(--skack-meta-font);
 }
 
 .help-flag {
@@ -596,7 +602,7 @@
   border-radius: 5px;
   background: var(--skack-soft);
   color: var(--skack-green);
-  font: 10px/1 "IBM Plex Mono", monospace;
+  font: 10px/1 var(--skack-meta-font);
 }
 
 .question-copy > small {
@@ -604,7 +610,7 @@
   overflow: hidden;
   margin-top: 10px;
   color: var(--skack-subtle);
-  font: 10px/1.4 "IBM Plex Mono", monospace;
+  font: 10px/1.4 var(--skack-meta-font);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -617,7 +623,7 @@
   min-width: 0;
   padding: 3px 0;
   color: var(--skack-muted);
-  font: 10px/1.4 "IBM Plex Mono", monospace;
+  font: 10px/1.4 var(--skack-meta-font);
   text-align: right;
 }
 
@@ -670,7 +676,7 @@
 }
 
 .reply-alert strong {
-  font: 700 10px "IBM Plex Mono", monospace;
+  font: 700 10px var(--skack-meta-font);
 }
 
 .activity-list {
@@ -693,7 +699,7 @@
 
 .activity-list span {
   color: var(--skack-green);
-  font: 9px/1.3 "IBM Plex Mono", monospace;
+  font: 9px/1.3 var(--skack-meta-font);
 }
 
 .activity-list strong {
@@ -745,7 +751,7 @@
 .tag-cloud > p {
   margin: 0 0 11px;
   color: var(--skack-green);
-  font: 10px "IBM Plex Mono", monospace;
+  font: 10px var(--skack-meta-font);
 }
 
 .signal-key > div {
@@ -792,7 +798,7 @@
   border-radius: 6px;
   background: var(--skack-surface);
   color: var(--skack-muted);
-  font: 10px "IBM Plex Mono", monospace;
+  font: 10px var(--skack-meta-font);
 }
 
 .tag-cloud button:hover {
@@ -1053,13 +1059,13 @@
 
 .vote-stack strong {
   color: var(--skack-ink);
-  font: 700 18px "IBM Plex Mono", monospace;
+  font: 700 18px var(--skack-meta-font);
 }
 
 .detail-breadcrumb {
   margin-top: 3px;
   color: var(--skack-green);
-  font: 10px "IBM Plex Mono", monospace;
+  font: 10px var(--skack-meta-font);
 }
 
 .detail-title h1 {
@@ -1090,7 +1096,7 @@
   gap: 5px;
   margin-top: 16px;
   color: var(--skack-muted);
-  font: 10px "IBM Plex Mono", monospace;
+  font: 10px var(--skack-meta-font);
 }
 
 .content-actions {
@@ -1162,7 +1168,7 @@
 
 .answer-vote b {
   color: var(--skack-ink);
-  font: 700 18px "IBM Plex Mono", monospace;
+  font: 700 18px var(--skack-meta-font);
 }
 
 .answer-vote i {
@@ -1191,7 +1197,7 @@
 
 .answer-by > span {
   color: var(--skack-muted);
-  font: 10px/1.4 "IBM Plex Mono", monospace;
+  font: 10px/1.4 var(--skack-meta-font);
 }
 
 .accepted-btn {
@@ -1234,12 +1240,12 @@
 
 .skack-comment b {
   color: var(--skack-green);
-  font: 9px "IBM Plex Mono", monospace;
+  font: 9px var(--skack-meta-font);
 }
 
 .skack-comment small {
   color: var(--skack-muted);
-  font: 9px "IBM Plex Mono", monospace;
+  font: 9px var(--skack-meta-font);
 }
 
 .skack-comment p {
@@ -1396,7 +1402,7 @@
   padding: 7px 9px;
   border-top: 1px solid var(--skack-line);
   color: var(--skack-muted);
-  font: 9px "IBM Plex Mono", monospace;
+  font: 9px var(--skack-meta-font);
 }
 
 .image-attachments figcaption button {
