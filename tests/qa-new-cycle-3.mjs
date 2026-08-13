@@ -5,6 +5,7 @@ const context = await browser.newContext();
 const page = await context.newPage();
 const findings = [];
 const finding = (label, present) => { findings.push({ label, present }); console.log(`${present ? "GAP" : "PASS"} · ${label}`); };
+page.on("dialog", (dialog) => dialog.accept());
 
 try {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
