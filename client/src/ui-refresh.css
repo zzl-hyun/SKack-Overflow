@@ -444,16 +444,25 @@
 }
 
 .signal-stage {
-  position: relative;
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  grid-template-areas:
+    "dot small"
+    ". count"
+    ". label"
+    ". accepted";
+  column-gap: 6px;
+  align-content: start;
   align-self: center;
   min-height: 78px;
-  padding: 18px 0 0 17px;
+  padding: 2px 0 0;
 }
 
 .signal-stage > i {
-  position: absolute;
-  top: 2px;
-  left: 1px;
+  grid-area: dot;
+  align-self: start;
+  justify-self: start;
+  margin-top: 2px;
   width: 9px;
   height: 9px;
   border: 2px solid var(--skack-green);
@@ -462,32 +471,40 @@
 }
 
 .signal-stage small {
+  grid-area: small;
   display: block;
+  max-width: 100%;
+  overflow: hidden;
   color: var(--skack-muted);
-  font: 9px/1.4 "IBM Plex Mono", monospace;
-  white-space: nowrap;
+  font: 9px/1.25 "IBM Plex Mono", monospace;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 .signal-stage strong {
+  grid-area: count;
   display: block;
-  margin-top: 11px;
+  margin-top: 10px;
   color: var(--skack-ink);
   font: 700 22px/1 "IBM Plex Mono", monospace;
 }
 
 .signal-stage > span {
+  grid-area: label;
   display: block;
-  margin-top: 4px;
+  margin-top: 3px;
   color: var(--skack-muted);
   font-size: 10px;
 }
 
 .signal-stage > b {
+  grid-area: accepted;
   display: grid;
   place-items: center;
   width: 23px;
   height: 23px;
-  margin-top: 8px;
+  margin-top: 7px;
   border-radius: 50%;
   background: var(--skack-green);
   color: #fff;
@@ -1653,7 +1670,7 @@
 
   .signal-stage {
     min-height: 70px;
-    padding-left: 15px;
+    padding-left: 0;
   }
 
   .signal-stage small {
