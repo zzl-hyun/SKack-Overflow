@@ -39,6 +39,8 @@ export function MarkdownEditor({
         defaultValue: initialValueRef.current,
         features: {
           [Crepe.Feature.ImageBlock]: false,
+          [Crepe.Feature.Toolbar]: false,
+          [Crepe.Feature.TopBar]: true,
         },
         featureConfigs: {
           [Crepe.Feature.Placeholder]: {

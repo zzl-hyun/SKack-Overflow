@@ -2328,7 +2328,7 @@ export default function Home() {
                 }
               />
               <PasteImageHint processing={imageProcessing > 0} />
-              <div>
+              <div className="answer-actions">
                 <button disabled={imageProcessing > 0} onClick={submitAnswer}>
                   답변 남기기 <Send size={15} />
                 </button>

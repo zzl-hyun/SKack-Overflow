@@ -467,7 +467,7 @@ body,
 }
 
 .ask-bottom button,
-.answer-form > div > button,
+.answer-form > .answer-actions > button,
 .comment-box > button {
   border-radius: 999px;
   background: var(--skack-coral) !important;

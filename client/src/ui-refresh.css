@@ -991,6 +991,45 @@
   line-height: 1.65;
 }
 
+.skack-markdown-editor .milkdown .milkdown-top-bar {
+  padding: 0 8px;
+  background: var(--skack-soft);
+  border-bottom-color: var(--skack-line);
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-heading-label,
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-heading-option {
+  font-family: var(--skack-hand-font);
+  color: var(--skack-ink);
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-heading-button,
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-item {
+  border-radius: 5px;
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-item {
+  width: 30px;
+  height: 30px;
+  margin: 4px;
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-item svg {
+  width: 19px;
+  height: 19px;
+  color: var(--skack-green);
+  fill: var(--skack-green);
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-item:hover {
+  background: var(--skack-red-soft);
+}
+
+.skack-markdown-editor .milkdown .milkdown-top-bar .top-bar-item.active svg {
+  color: var(--skack-red);
+  fill: var(--skack-red);
+}
+
 .skack-markdown-editor .milkdown .ProseMirror p {
   padding: 3px 0;
   font-size: 1em;
@@ -1065,7 +1104,7 @@
 }
 
 .ask-bottom button,
-.answer-form > div > button,
+.answer-form > .answer-actions > button,
 .comment-box > button {
   display: inline-flex;
   align-items: center;
@@ -1081,7 +1120,7 @@
 }
 
 .ask-bottom button:hover,
-.answer-form > div > button:hover,
+.answer-form > .answer-actions > button:hover,
 .comment-box > button:hover {
   background: var(--skack-red-dark);
 }
@@ -1500,7 +1539,7 @@
   font-size: 12px !important;
 }
 
-.answer-form > div {
+.answer-form > .answer-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
