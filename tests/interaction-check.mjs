@@ -60,7 +60,7 @@ try {
   await check(await page.getByText("답변을 채택했어요.").isVisible(), "질문자 답변 채택");
   await page.getByRole("button", { name: "도움 됨" }).click();
   await check(await page.getByText("도움이 됐어요.").isVisible(), "동료 답변 공감");
-  await page.reload({ waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:3000/", { waitUntil: "networkidle" });
   await page.locator(".filter-tabs button").filter({ hasText: "내 막힘" }).click();
   await page.locator(".question-row").filter({ hasText: title }).click();
   await check(await page.locator(".detail-modal .accepted-btn.active").isVisible(), "채택·투표·댓글 새로고침 복원");
