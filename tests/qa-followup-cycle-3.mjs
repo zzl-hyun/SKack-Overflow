@@ -5,7 +5,7 @@ const context = await browser.newContext();
 const first = await context.newPage();
 const second = await context.newPage();
 const findings = [];
-const finding = (label, present) => { findings.push({ label, present }); console.log(`${present ? "GAP" : "PASS"} · ${label}`); };
+const finding = (label, present) => { if (present) throw new Error(`QA 결함 재현: ${label}`); findings.push({ label, present }); console.log(`PASS · 결함 재현 없음 — ${label}`); };
 
 try {
   first.on("dialog", (dialog) => dialog.accept());
@@ -17,7 +17,7 @@ try {
   await second.locator(".top-actions button").last().click();
   await second.locator(".ask-modal input").first().fill("다른 탭 새 질문");
   await second.locator(".ask-modal textarea").fill("UID 동기화 뒤 작성 검증");
-  await second.getByRole("button", { name: "질문 올리기" }).click();
+  await second.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
   const ownerUid = await second.evaluate(() => JSON.parse(localStorage.getItem("skack-overflow-questions") || "[]").find((item) => item.title === "다른 탭 새 질문")?.ownerUid);
   finding("다른 탭에서 바뀐 익명 UID가 현재 탭 작성자에 반영되지 않는다", ownerUid !== importedUid);
 } finally {

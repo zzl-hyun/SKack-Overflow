@@ -5,7 +5,7 @@ const context = await browser.newContext();
 const page = await context.newPage();
 const errors = [];
 const findings = [];
-const finding = (label, present) => { findings.push({ label, present }); console.log(`${present ? "GAP" : "PASS"} · ${label}`); };
+const finding = (label, present) => { if (present) throw new Error(`QA 결함 재현: ${label}`); findings.push({ label, present }); console.log(`PASS · 결함 재현 없음 — ${label}`); };
 page.on("pageerror", (error) => errors.push(error.message));
 
 try {

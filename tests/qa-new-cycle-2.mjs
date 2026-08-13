@@ -4,7 +4,7 @@ const browser = await chromium.launch({ headless: true, executablePath: "/usr/bi
 const context = await browser.newContext();
 const page = await context.newPage();
 const findings = [];
-const finding = (label, present) => { findings.push({ label, present }); console.log(`${present ? "GAP" : "PASS"} · ${label}`); };
+const finding = (label, present) => { if (present) throw new Error(`QA 결함 재현: ${label}`); findings.push({ label, present }); console.log(`PASS · 결함 재현 없음 — ${label}`); };
 
 try {
   const owner = "sk-qaowner";
@@ -16,12 +16,12 @@ try {
   await page.locator(".top-actions button").last().click();
   await page.locator(".ask-modal input").first().fill(title);
   await page.locator(".ask-modal textarea").fill("읽음 상태 검증용 질문입니다.");
-  await page.getByRole("button", { name: "질문 올리기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
   await page.evaluate(({ peer }) => localStorage.setItem("skack-overflow-anon-uid", peer), { peer });
   await page.reload({ waitUntil: "networkidle" });
   await page.locator(".question-row").filter({ hasText: title }).click();
   await page.locator(".answer-form textarea").fill("읽음 상태 QA 답변");
-  await page.getByRole("button", { name: "답변 남기기" }).click();
+  await page.getByRole("button", { name: "힌트 남기기" }).click();
   await page.locator(".modal-close").click();
   await page.evaluate(({ owner }) => localStorage.setItem("skack-overflow-anon-uid", owner), { owner });
   await page.reload({ waitUntil: "networkidle" });

@@ -16,19 +16,19 @@ try {
   await page.locator(".modal-layer").click({ position: { x: 2, y: 2 } });
   note("오버레이 클릭으로 질문 모달을 닫는다", !(await page.locator(".ask-modal").isVisible()));
   await page.locator(".top-actions button").last().click();
-  await page.getByRole("button", { name: "질문 올리기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
   note("빈 질문 입력을 차단한다", await page.getByText("제목과 내용을 적어주세요.").isVisible());
 
   await page.locator(".ask-modal input").nth(0).fill("QA 경계 질문");
   await page.locator(".ask-modal textarea").fill("빈 답변과 댓글 검증용 질문입니다.");
-  await page.getByRole("button", { name: "질문 올리기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
   await page.locator(".question-row").filter({ hasText: "QA 경계 질문" }).click();
 
-  await page.getByRole("button", { name: "답변 남기기" }).click();
-  note("빈 답변 입력을 차단한다", await page.getByText("답변 내용을 적어주세요.").isVisible());
+  await page.getByRole("button", { name: "힌트 남기기" }).click();
+  note("빈 힌트 입력을 차단한다", await page.getByText("힌트 내용을 적어주세요.").isVisible());
 
   await page.locator(".answer-form textarea").fill("QA 답변");
-  await page.getByRole("button", { name: "답변 남기기" }).click();
+  await page.getByRole("button", { name: "힌트 남기기" }).click();
   await page.getByRole("button", { name: "댓글 쓰기" }).click();
   await page.getByRole("button", { name: "댓글 등록" }).click();
   note("빈 댓글 입력을 차단한다", await page.getByText("댓글 내용을 적어주세요.").isVisible());

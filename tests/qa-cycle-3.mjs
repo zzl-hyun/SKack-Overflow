@@ -4,7 +4,7 @@ const browser = await chromium.launch({ headless: true, executablePath: "/usr/bi
 const context = await browser.newContext();
 const page = await context.newPage();
 const findings = [];
-const finding = (label, present) => { findings.push({ label, present }); console.log(`${present ? "GAP" : "PASS"} · ${label}`); };
+const finding = (label, present) => { if (present) throw new Error(`QA 결함 재현: ${label}`); findings.push({ label, present }); console.log(`PASS · 결함 재현 없음 — ${label}`); };
 
 try {
   await page.goto("http://127.0.0.1:3000/#q-120", { waitUntil: "networkidle" });

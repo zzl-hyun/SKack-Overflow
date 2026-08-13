@@ -29,19 +29,19 @@ try {
   await page.locator(".ask-modal textarea").fill("채택은 질문 작성자만 해야 하는지와, 답변 투표가 중복되지 않는지 확인하고 싶어요.");
   await page.locator(".ask-modal input").nth(1).fill("auth, answer, vote");
   await page.locator(".ask-bottom button").click();
-  await check(await page.getByText("질문을 올렸어요. 답변이 오면 여기서 확인할 수 있어요.").isVisible(), "익명 질문 작성");
+  await check(await page.getByText("막힘을 남겼어요. 힌트가 도착하면 여기서 확인할 수 있어요.").isVisible(), "익명 막힘 기록 작성");
   await check(await page.locator(".question-row").count() === 1, "내가 쓴 글 필터 자동 전환");
 
   await page.evaluate((peer) => localStorage.setItem("skack-overflow-anon-uid", peer), "sk-peer-test");
   await page.reload({ waitUntil: "networkidle" });
   await page.locator(".filter-tabs button").filter({ hasText: "모든 막힘" }).click();
   await page.locator(".question-row").filter({ hasText: title }).click();
-  await check(await page.getByText("질문 작성자만 답변을 채택할 수 있어요.").count() === 0, "동료에게 채택 버튼 미노출");
+  await check(await page.getByText("질문 작성자만 다음 관점을 선택할 수 있어요.").count() === 0, "동료에게 관점 선택 버튼 미노출");
   await page.locator(".answer-form textarea").fill("채택 검증 힌트: 질문 작성자의 UID와 현재 UID를 비교해서 채택 버튼을 보여주세요.");
-  await page.getByRole("button", { name: "답변 남기기" }).click();
+  await page.getByRole("button", { name: "힌트 남기기" }).click();
   await check(await page.getByText("채택 검증 힌트: 질문 작성자의 UID와 현재 UID를 비교해서 채택 버튼을 보여주세요.").isVisible(), "동료 익명 힌트 작성");
   await page.getByRole("button", { name: "도움 됨" }).click();
-  await check(await page.getByText("내 답변에는 공감을 남길 수 없어요.").isVisible(), "내 답변 자기 공감 차단");
+  await check(await page.getByText("내 힌트에는 공감을 남길 수 없어요.").isVisible(), "내 힌트 자기 공감 차단");
   await page.getByRole("button", { name: "댓글 쓰기" }).click();
   await page.locator(".comment-box textarea").fill("댓글 검증: 이 흐름으로 질문 작성자만 채택할 수 있겠네요.");
   await page.getByRole("button", { name: "댓글 등록" }).click();
@@ -57,7 +57,7 @@ try {
   await page.locator(".question-row").filter({ hasText: title }).click();
   await check(await page.locator(".detail-modal .accepted-btn").isVisible(), "질문 작성자에게만 채택 버튼 표시");
   await page.locator(".detail-modal .accepted-btn").click();
-  await check(await page.getByText("답변을 채택했어요.").isVisible(), "질문자 답변 채택");
+  await check(await page.getByText("다음 관점을 선택했어요.").isVisible(), "질문자 다음 관점 선택");
   await page.getByRole("button", { name: "도움 됨" }).click();
   await check(await page.getByText("도움이 됐어요.").isVisible(), "동료 답변 공감");
   await page.goto("http://127.0.0.1:3000/", { waitUntil: "networkidle" });
