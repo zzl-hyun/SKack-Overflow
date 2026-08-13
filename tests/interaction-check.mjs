@@ -17,12 +17,12 @@ try {
   await check(Boolean(ownerUid?.startsWith("sk-")), "브라우저별 SKACK 익명 UID 생성");
   await check(await page.locator(".question-row").count() === 12, "초기 질문 12개 표시");
 
-  await page.locator(".filter-tabs button").filter({ hasText: "답변 있음" }).click();
-  await check(await page.locator(".question-row").count() === 5, "답변 있음 필터");
-  await page.locator(".filter-tabs button").filter({ hasText: "전체" }).click();
-  await page.getByPlaceholder("궁금한 기술이나 키워드 검색").fill("rag");
+  await page.locator(".filter-tabs button").filter({ hasText: "힌트 도착" }).click();
+  await check(await page.locator(".question-row").count() === 5, "힌트 도착 필터");
+  await page.locator(".filter-tabs button").filter({ hasText: "모든 막힘" }).click();
+  await page.getByPlaceholder("기술, 증상, 키워드 검색").fill("rag");
   await check(await page.locator(".question-row").count() === 1, "태그·기술 검색");
-  await page.getByPlaceholder("궁금한 기술이나 키워드 검색").fill("");
+  await page.getByPlaceholder("기술, 증상, 키워드 검색").fill("");
 
   await page.locator(".top-actions button").click();
   await page.locator(".ask-modal input").nth(0).fill(title);
@@ -34,7 +34,7 @@ try {
 
   await page.evaluate((peer) => localStorage.setItem("skack-overflow-anon-uid", peer), "sk-peer-test");
   await page.reload({ waitUntil: "networkidle" });
-  await page.locator(".filter-tabs button").filter({ hasText: "전체" }).click();
+  await page.locator(".filter-tabs button").filter({ hasText: "모든 막힘" }).click();
   await page.locator(".question-row").filter({ hasText: title }).click();
   await check(await page.getByText("질문 작성자만 답변을 채택할 수 있어요.").count() === 0, "동료에게 채택 버튼 미노출");
   await page.locator(".answer-form textarea").fill("채택 검증 힌트: 질문 작성자의 UID와 현재 UID를 비교해서 채택 버튼을 보여주세요.");
@@ -53,7 +53,7 @@ try {
 
   await page.evaluate((owner) => localStorage.setItem("skack-overflow-anon-uid", owner), ownerUid);
   await page.reload({ waitUntil: "networkidle" });
-  await page.locator(".filter-tabs button").filter({ hasText: "내 질문" }).click();
+  await page.locator(".filter-tabs button").filter({ hasText: "내 막힘" }).click();
   await page.locator(".question-row").filter({ hasText: title }).click();
   await check(await page.locator(".detail-modal .accepted-btn").isVisible(), "질문 작성자에게만 채택 버튼 표시");
   await page.locator(".detail-modal .accepted-btn").click();
@@ -61,7 +61,7 @@ try {
   await page.getByRole("button", { name: "도움 됨" }).click();
   await check(await page.getByText("도움이 됐어요.").isVisible(), "동료 답변 공감");
   await page.reload({ waitUntil: "networkidle" });
-  await page.locator(".filter-tabs button").filter({ hasText: "내 질문" }).click();
+  await page.locator(".filter-tabs button").filter({ hasText: "내 막힘" }).click();
   await page.locator(".question-row").filter({ hasText: title }).click();
   await check(await page.locator(".detail-modal .accepted-btn.active").isVisible(), "채택·투표·댓글 새로고침 복원");
   await check(errors.length === 0, `브라우저 런타임 오류 없음 (${errors.join(" | ")})`);
