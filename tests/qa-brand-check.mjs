@@ -29,6 +29,12 @@ try {
   await check(mark.wordmarkFontFamily.includes("IBM Plex Mono") && mark.overflowFontFamily === mark.wordmarkFontFamily, "SKACK과 Overflow 워드마크가 동일한 IBM Plex Mono 글꼴을 사용한다");
   await check(mark.wordmarkFontWeight === "700" && mark.overflowFontWeight === mark.wordmarkFontWeight, "SKACK과 Overflow 워드마크의 굵기가 동일하다");
   await check(mark.wordmarkLetterSpacing === mark.overflowLetterSpacing, "SKACK과 Overflow 워드마크의 자간이 동일하다");
+  const colorRoles = await page.evaluate(() => ({
+    nextPerspective: getComputedStyle(document.querySelector(".hero-copy h1 em")).color,
+    primaryAction: getComputedStyle(document.querySelector(".top-actions > button:last-child")).backgroundColor,
+  }));
+  await check(colorRoles.nextPerspective === "rgb(46, 118, 116)", "‘다음 관점’은 teal 연결 신호를 사용한다");
+  await check(colorRoles.primaryAction === "rgb(232, 102, 61)", "‘막힘 남기기’ 행동은 Signal Orange를 사용한다");
 } finally {
   await browser.close();
 }
