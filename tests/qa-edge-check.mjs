@@ -11,6 +11,7 @@ try {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: "networkidle" });
+  note("목록의 막힘 작성 행동 이름이 화면 문구와 일치한다", await page.locator(".list-head").getByRole("button", { name: "막힘 남기기" }).count() === 1);
 
   await page.locator(".top-actions button").last().click();
   await page.locator(".modal-layer").click({ position: { x: 2, y: 2 } });
@@ -18,6 +19,7 @@ try {
   await page.locator(".top-actions button").last().click();
   await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
   note("빈 질문 입력을 차단한다", await page.getByText("제목과 내용을 적어주세요.").isVisible());
+  note("완료·오류 토스트가 보조기술에 안내된다", await page.locator('.toast[role="status"][aria-live="polite"]').isVisible());
 
   await page.locator(".ask-modal input").nth(0).fill("QA 경계 질문");
   await page.locator(".ask-modal textarea").fill("빈 답변과 댓글 검증용 질문입니다.");
