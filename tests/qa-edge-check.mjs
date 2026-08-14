@@ -10,26 +10,26 @@ try {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: "networkidle" });
-  note("목록의 막힘 작성 행동 이름이 화면 문구와 일치한다", await page.locator(".list-head").getByRole("button", { name: "막힘 남기기" }).count() === 1);
+  note("목록의 질문 작성 행동 이름이 화면 문구와 일치한다", await page.locator(".list-head").getByRole("button", { name: "질문 올리기" }).count() === 1);
 
   await page.locator(".top-actions button").last().click();
   await page.locator(".modal-layer").click({ position: { x: 2, y: 2 } });
   note("오버레이 클릭으로 질문 모달을 닫는다", !(await page.locator(".ask-modal").isVisible()));
   await page.locator(".top-actions button").last().click();
-  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "질문 올리기" }).click();
   note("빈 질문 입력을 차단한다", await page.getByText("제목과 내용을 적어주세요.").isVisible());
   note("완료·오류 토스트가 보조기술에 안내된다", await page.locator('.toast[role="status"][aria-live="polite"]').isVisible());
 
   await page.locator(".ask-modal input").nth(0).fill("QA 경계 질문");
   await page.locator(".ask-modal textarea").fill("빈 답변과 댓글 검증용 질문입니다.");
-  await page.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
+  await page.locator(".ask-modal").getByRole("button", { name: "질문 올리기" }).click();
   await page.locator(".question-row").filter({ hasText: "QA 경계 질문" }).click();
 
-  await page.getByRole("button", { name: "힌트 남기기" }).click();
-  note("빈 힌트 입력을 차단한다", await page.getByText("힌트 내용을 적어주세요.").isVisible());
+  await page.getByRole("button", { name: "답변 남기기" }).click();
+  note("빈 답변 입력을 차단한다", await page.getByText("답변 내용을 적어주세요.").isVisible());
 
   await page.locator(".answer-form textarea").fill("QA 답변");
-  await page.getByRole("button", { name: "힌트 남기기" }).click();
+  await page.getByRole("button", { name: "답변 남기기" }).click();
   await page.getByRole("button", { name: "댓글 쓰기" }).click();
   note("댓글 쓰기 뒤 입력창에 자동 포커스가 이동한다", await page.locator(".comment-box textarea").evaluate((element) => document.activeElement === element));
   await page.getByRole("button", { name: "댓글 등록" }).click();
@@ -53,7 +53,7 @@ try {
   await page.keyboard.press("Escape");
   note("Escape로 상세 모달을 닫는다", !(await page.locator(".detail-modal").isVisible()));
 
-  await page.locator(".filter-tabs button").filter({ hasText: "내 막힘" }).click();
+  await page.locator(".filter-tabs button").filter({ hasText: "내 질문" }).click();
   await page.locator(".question-row").filter({ hasText: "QA 경계 질문" }).click();
   await page.locator(".question-body").getByRole("button", { name: "수정" }).click();
   await page.locator(".detail-title input").fill("QA 수정 질문");
@@ -66,7 +66,7 @@ try {
   await ownAnswer.getByRole("button", { name: "저장" }).click();
   note("답변 작성자가 답변을 수정한다", await ownAnswer.getByText("QA 수정 답변").isVisible());
   await ownAnswer.getByRole("button", { name: "삭제" }).click();
-  note("힌트 삭제가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
+  note("답변 삭제가 서비스 내 확인 토스트를 연다", await page.locator(".confirmation-toast").isVisible());
   await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();
   note("답변 작성자가 답변을 삭제한다", !(await page.getByText("QA 수정 답변").isVisible()));
   await page.locator(".question-body").getByRole("button", { name: "삭제" }).click();
@@ -74,7 +74,7 @@ try {
   await page.locator(".confirmation-toast").getByRole("button", { name: "삭제" }).click();
   note("질문 작성자가 질문을 삭제한다", !(await page.locator(".detail-modal").isVisible()));
 
-  await page.locator(".filter-tabs button").filter({ hasText: "모든 막힘" }).click();
+  await page.locator(".filter-tabs button").filter({ hasText: "전체" }).click();
   await page.locator(".question-row").filter({ hasText: "API 응답은 오는데" }).click();
   const sampleAnswer = page.locator(".answer-card").first();
   await sampleAnswer.getByRole("button", { name: "신고" }).click();

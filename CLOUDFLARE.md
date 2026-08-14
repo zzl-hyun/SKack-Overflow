@@ -1,11 +1,11 @@
 # Cloudflare Workers + KV 배포
 
-SKACK Overflow는 Cloudflare Workers가 정적 React 자산과 `/api/*` 요청을 함께 처리하도록 구성돼 있습니다. `SKACK_KV` 바인딩은 전용 `SKACK_OVERFLOW_KV` 네임스페이스를 가리킵니다.
+SKack Overflow는 Cloudflare Workers가 정적 React 자산과 `/api/*` 요청을 함께 처리하도록 구성돼 있습니다. `SKACK_KV` 바인딩은 전용 `SKACK_OVERFLOW_KV` 네임스페이스를 가리킵니다.
 
 | KV 키 | 저장 내용 |
 |---|---|
-| `state:questions` | 서비스 전체 질문·힌트·댓글·답글 상태 |
-| `user:{익명 UID}` | 브라우저별 차단 목록과 힌트 읽음 상태 |
+| `state:questions` | 서비스 전체 질문·답변·댓글·답글 상태 |
+| `user:{익명 UID}` | 브라우저별 차단 목록과 새 답변 읽음 상태 |
 
 ## 명령
 

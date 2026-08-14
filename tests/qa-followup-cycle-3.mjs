@@ -17,7 +17,7 @@ try {
   await second.locator(".top-actions button").last().click();
   await second.locator(".ask-modal input").first().fill("다른 탭 새 질문");
   await second.locator(".ask-modal textarea").fill("UID 동기화 뒤 작성 검증");
-  await second.locator(".ask-modal").getByRole("button", { name: "막힘 남기기" }).click();
+  await second.locator(".ask-modal").getByRole("button", { name: "질문 올리기" }).click();
   const ownerUid = await second.evaluate(() => JSON.parse(localStorage.getItem("skack-overflow-questions") || "[]").find((item) => item.title === "다른 탭 새 질문")?.ownerUid);
   finding("다른 탭에서 바뀐 익명 UID가 현재 탭 작성자에 반영되지 않는다", ownerUid !== importedUid);
 } finally {
